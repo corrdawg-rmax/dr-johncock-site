@@ -1,0 +1,803 @@
+{
+  "practice": {
+    "_description": "Carolina Podiatry Center is a Hickory, NC podiatry practice led by Dr. William J. Johncock, DPM, providing foot and ankle care for heel pain, sports injuries, nail problems, diabetic foot concerns, wound care, and surgical foot conditions.",
+    "name": "Carolina Podiatry Center",
+    "tagline": "Quality foot care for the long run",
+    "short_description": "Quality foot care for the long run from a Hickory, NC podiatry practice focused on conservative and surgical foot care, sports injuries, heel pain, nail care, and diabetic foot concerns.",
+    "city": "Hickory",
+    "state": "NC",
+    "state_full": "North Carolina",
+    "has_assigned_doctor": true,
+    "founded_year": null,
+    "years_experience": 25,
+    "custom_note": "Public directory and mirrored site sources describe Carolina Podiatry Center as a Hickory podiatry practice led by Dr. William J. Johncock, DPM, with conservative and surgical foot care and a sports medicine focus."
+  },
+  "doctor": {
+    "_description": "Assigned provider details. Leave blank in unassigned mode. Do not show doctor-specific credentials, photos, years, or certification claims unless these fields are populated and has_assigned_doctor is true.",
+    "name": "William J. Johncock",
+    "first_name": "William",
+    "credentials": "DPM",
+    "title": "Podiatrist and Foot & Ankle Surgeon",
+    "bio_short": "Dr. William J. Johncock is a Hickory podiatrist associated with Carolina Podiatry Center. Public directory listings describe his practice focus as conservative and surgical foot care, with attention to sports-related foot and ankle problems.",
+    "photo": "/client-images/dr-johncock-running-shoe.webp",
+    "is_board_certified": true,
+    "board_certification_claim": "Public mirrored site listings reference American Board of Podiatric Surgery certification. Confirm with the office before using stronger credential copy.",
+    "license_state": "NC",
+    "license_number_public": "",
+    "board_certifications": [
+      "American Board of Podiatric Surgery, public listing, confirm current status before final publication"
+    ],
+    "education": [],
+    "custom_note": "Avoid ratings claims. Use sports medicine and long-run positioning because public photos/reviews support that tone."
+  },
+  "contact": {
+    "_description": "Public contact and location details. Only make proximity, parking, accessibility, or map claims if the matching policy/location fields below support them.",
+    "phone": "(828) 327-3029",
+    "phone_raw": "+18283273029",
+    "email": "",
+    "address_line_1": "36 14th Avenue NE",
+    "address_line_2": "Suite 102",
+    "city": "Hickory",
+    "state": "NC",
+    "zip": "28601",
+    "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.0025260254474!2d-81.34013072272798!3d35.75074267256477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88512fd5f63b8ebb%3A0x48c7943d8299b25a!2sDr.%20William%20J%20Johncock!5e0!3m2!1sen!2sca!4v1780512605461!5m2!1sen!2sca",
+    "google_maps_link": "https://www.google.com/maps/search/?api=1&query=Dr.%20William%20J%20Johncock%2036%2014th%20Avenue%20NE%20Suite%20102%20Hickory%20NC%2028601",
+    "custom_note": "Google Business Profile map embed supplied by client."
+  },
+  "hours": {
+    "_description": "Public office hours. Use these for display only. Do not infer walk-in, emergency, same-day, or after-hours availability from hours alone.",
+    "monday": "Call to confirm",
+    "tuesday": "Call to confirm",
+    "wednesday": "Call to confirm",
+    "thursday": "Call to confirm",
+    "friday": "Call to confirm",
+    "saturday": "Call to confirm",
+    "sunday": "Call to confirm",
+    "custom_note": "Current office hours were not confirmed during research. Use call-to-confirm language until verified."
+  },
+  "reviews": {
+    "_description": "Review display guardrails. Do not show star ratings, review counts, testimonials, or review widgets unless enabled and supported by real source data or manual reviews.",
+    "has_review_stream": false,
+    "source": null,
+    "google_place_id": "",
+    "healthgrades_url": "",
+    "embed_code": "",
+    "rating": null,
+    "review_count": null,
+    "manual_reviews": [],
+    "enabled": false,
+    "custom_note": "Do not show ratings/review score. GBP rating is not strong enough for marketing use."
+  },
+  "social": {
+    "_description": "Public social/profile URLs. Empty values should not render.",
+    "facebook": "",
+    "instagram": "",
+    "youtube": "",
+    "twitter": "",
+    "linkedin": "",
+    "tiktok": "",
+    "google_business": ""
+  },
+  "integrations": {
+    "_description": "Third-party tracking and app integrations. Empty values should not render scripts.",
+    "google_reviews_place_id": "",
+    "google_analytics_id": ""
+  },
+  "forms": {
+    "_description": "Lead capture form settings. Leave embed_html blank in the base template. Paste tenant-specific GHL or other embed code only when building an assigned site.",
+    "_how_to_update": "Paste your full GHL (or other) embed snippet into embed_html. JSON requires escaped inner double quotes and line breaks. The build pipeline should dedupe duplicate script tags automatically across forms.",
+    "appointment": {
+      "label": "Book Appointment",
+      "provider": "ghl",
+      "form_id": "YLdmODDLZIr6cKxYjYm2",
+      "form_name": "Podiatry Form",
+      "default_height_px": 460,
+      "container_max_width_px": 640,
+      "show_on_pages": [
+        "/",
+        "/appointment",
+        "/contact",
+        "/conditions/*",
+        "/treatments/*",
+        "/blog/*"
+      ],
+      "embed_html": "<iframe\n    src=\"https://api.leadconnectorhq.com/widget/form/YLdmODDLZIr6cKxYjYm2\"\n    style=\"width:100%;height:100%;border:none;border-radius:8px\"\n    id=\"inline-YLdmODDLZIr6cKxYjYm2\" \n    data-layout=\"{'id':'INLINE'}\"\n    data-trigger-type=\"alwaysShow\"\n    data-trigger-value=\"\"\n    data-activation-type=\"alwaysActivated\"\n    data-activation-value=\"\"\n    data-deactivation-type=\"neverDeactivate\"\n    data-deactivation-value=\"\"\n    data-form-name=\"Podiatry Form\"\n    data-height=\"460\"\n    data-layout-iframe-id=\"inline-YLdmODDLZIr6cKxYjYm2\"\n    data-form-id=\"YLdmODDLZIr6cKxYjYm2\"\n    title=\"Podiatry Form\"\n>\n</iframe>\n<script src=\"https://link.msgsndr.com/js/form_embed.js\"></script>"
+    }
+  },
+  "branding": {
+    "_description": "Brand identity and visual tokens. These should drive global CSS variables, favicon links, logo display, and tenant-level color changes.",
+    "primary_color": "#1F4E79",
+    "secondary_color": "#3B7FC9",
+    "accent_color": "#E8A33D",
+    "supporting_slate": "#4E5A66",
+    "dark_text": "#1A1A1A",
+    "light_bg": "#F7F9FC",
+    "logo_path": "/branding/logo.png",
+    "logo_alt": "Carolina Podiatry Center logo",
+    "favicon_path": "/branding/favicon.ico",
+    "favicon_svg_path": "/branding/favicon.svg",
+    "favicon_png_96_path": "/branding/favicon-96x96.png",
+    "apple_touch_icon_path": "/branding/apple-touch-icon.png",
+    "web_app_manifest_192_path": "/branding/web-app-manifest-192x192.png",
+    "web_app_manifest_512_path": "/branding/web-app-manifest-512x512.png",
+    "webmanifest_path": "/branding/site.webmanifest",
+    "logo_display_text": "Carolina Podiatry Center",
+    "logo_display_text_color": "#1F4E79",
+    "typography": {
+      "heading_font_family": "Inter Tight",
+      "heading_font_source": "fontsource",
+      "heading_font_fallback": "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+      "heading_weights": [
+        600,
+        700
+      ],
+      "body_font_family": "Inter",
+      "body_font_source": "fontsource",
+      "body_font_fallback": "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+      "body_weights": [
+        400,
+        500,
+        700
+      ],
+      "base_font_size_px": 16,
+      "scale_ratio": 1.25,
+      "line_height_body": 1.6,
+      "line_height_heading": 1.2,
+      "letter_spacing_heading": "-0.01em",
+      "letter_spacing_body": "0"
+    },
+    "logo_text_mode": "image_plus_text",
+    "logo_text_style": {
+      "_description": "Controls the optional text beside an image-only logo. Use logo_text_mode 'image_only' when a tenant provides a full wordmark/logo that already includes text.",
+      "font_family": "Inter Tight",
+      "font_weight": 700,
+      "font_size_rem": 1.15,
+      "letter_spacing": "0",
+      "text_transform": "none"
+    }
+  },
+  "site_category": "provider",
+  "copy_rules": {
+    "_description": "Content guardrails for AI and templates. These fields help keep copy aligned with the style guide and prevent drift between provider-site and directory-site language.",
+    "voice_mode": "local_clinic_template",
+    "rank_and_rent_transparency_level": "balanced",
+    "use_first_person_plural": true,
+    "avoid_directory_tone": true,
+    "city_header_usage": "use_when_natural_not_every_heading",
+    "primary_keyword_usage": "natural",
+    "forbidden_punctuation": [
+      "em dash"
+    ],
+    "reading_level": "grade_8",
+    "claim_policy": "only_claim_what_config_supports",
+    "medical_disclaimer_required_on_condition_and_treatment_pages": true
+  },
+  "keywords": {
+    "_description": "Keyword guidance for titles, headings, body copy, blog posts, and internal links. Use naturally and avoid city or keyword stuffing.",
+    "primary": "Hickory NC podiatrist",
+    "primary_alt": "Hickory foot doctor",
+    "primary_local": "podiatrist in Hickory NC",
+    "primary_local_alt": "foot doctor in Hickory NC",
+    "secondary": [
+      "foot and ankle doctor",
+      "foot specialist",
+      "heel pain doctor",
+      "foot doctor near me",
+      "foot clinic",
+      "foot and ankle clinic",
+      "podiatry clinic",
+      "podiatrist near me",
+      "ankle doctor",
+      "foot pain doctor",
+      "foot pain specialist",
+      "heel pain specialist",
+      "sports foot doctor",
+      "diabetic foot doctor",
+      "bunion doctor",
+      "ingrown toenail doctor",
+      "custom orthotics doctor"
+    ],
+    "service_terms": [
+      "shockwave therapy",
+      "plantar fasciitis treatment",
+      "heel pain treatment",
+      "custom orthotics",
+      "bunion treatment",
+      "ingrown toenail removal",
+      "diabetic foot care",
+      "Achilles tendinitis treatment",
+      "ankle sprain treatment",
+      "hammertoe treatment",
+      "fungal toenail treatment",
+      "plantar wart treatment",
+      "corn and callus treatment",
+      "foot arthritis treatment",
+      "neuroma treatment",
+      "flat feet treatment",
+      "sports injury treatment",
+      "foot surgery consultation",
+      "wound care",
+      "orthotics fitting",
+      "PRP injections",
+      "laser therapy"
+    ],
+    "blog_long_tail_strategy": {
+      "_description": "Blog posts should target long-tail searches from the sitemap/blog matrix. Use the page topic, condition, treatment, symptom, comparison, cost, timeline, and local modifiers naturally.",
+      "enabled": true,
+      "source": "updated-sitemap.xlsx Blog Content Matrix",
+      "patterns": [
+        "why does [symptom] happen",
+        "when to see a foot doctor for [condition]",
+        "[condition] treatment options",
+        "[treatment] for [condition]",
+        "[condition] vs [condition]",
+        "how long does [condition] take to heal",
+        "what does [treatment] cost",
+        "best shoes for [condition]",
+        "home care for [condition]",
+        "[activity] foot pain"
+      ]
+    }
+  },
+  "nearby_areas": [
+    "Newton",
+    "Conover",
+    "Lenoir",
+    "Morganton",
+    "Taylorsville"
+  ],
+  "appointments": {
+    "_description": "Appointment and booking claims. Templates should only mention same-week, same-day, no-referral, walk-in, emergency, or response-time claims when explicitly enabled here.",
+    "same_week_available": false,
+    "same_day_available": false,
+    "walk_ins_available": false,
+    "no_referral_required": null,
+    "urgent_slots_available": false,
+    "after_hours_available": false,
+    "typical_response_time": "",
+    "new_patient_visit_length_minutes": null,
+    "booking_cta_label": "Request Appointment",
+    "phone_cta_label": "(828) 327-3029",
+    "custom_note": "Appointment speed, urgent availability, referral requirements, and new patient visit length were not verified. Use cautious call-to-confirm language."
+  },
+  "policies": {
+    "_description": "Tenant-specific patient policies and amenities. Empty or false fields should not be claimed in copy.",
+    "parking": "",
+    "wheelchair_accessible": null,
+    "languages": [],
+    "telehealth_available": false,
+    "children_seen": null,
+    "adults_seen": true,
+    "seniors_seen": true,
+    "cancellation_policy": "",
+    "payment_methods": [],
+    "hsa_fsa_accepted": null,
+    "financing_available": false,
+    "financing_provider": "",
+    "emergency_policy": "",
+    "custom_note": "Public details were not enough to confirm parking, accessibility, languages, cancellation policy, payment methods, financing, HSA/FSA, or emergency policy. Keep those claims out of copy until confirmed by the office."
+  },
+  "equipment": {
+    "_description": "Equipment and in-office capabilities. Do not mention X-rays, ultrasound, laser, shockwave device brands, 3D scanning, or surgery capabilities unless enabled here.",
+    "digital_xray": true,
+    "diagnostic_ultrasound": false,
+    "ultrasound_guided_injections": false,
+    "shockwave": {
+      "enabled": false,
+      "device_type": "",
+      "brand_or_model": "",
+      "claim_label": ""
+    },
+    "laser": {
+      "enabled": false,
+      "device_type": "",
+      "brand_or_model": "",
+      "claim_label": ""
+    },
+    "orthotic_scanning": {
+      "enabled": false,
+      "scan_type": "",
+      "claim_label": ""
+    },
+    "in_office_surgery": true,
+    "custom_note": "Extremity X-ray and surgical/procedure listings were found in public directory/context research. Shockwave, laser, ultrasound, onsite MRI, CT, and orthotic scanning were not confirmed, so service pages may exist for site breadth but equipment-specific claims should stay gated."
+  },
+  "services": {
+    "_description": "Service availability guardrails. If enabled is false, hide service pages, cards, CTAs, FAQs, pricing, and related links unless tenant_overrides force the page to show.",
+    "shockwave_therapy": {
+      "enabled": true,
+      "label": "Shockwave Therapy",
+      "slug": "/treatments/shockwave-therapy/",
+      "content_priority": "featured",
+      "requires_equipment_key": "equipment.shockwave.enabled",
+      "custom_note": "Content can discuss shockwave generally when this service is enabled, but device-specific claims require equipment.shockwave fields."
+    },
+    "custom_orthotics": {
+      "enabled": true,
+      "label": "Custom Orthotics",
+      "slug": "/treatments/orthotics/",
+      "content_priority": "standard",
+      "requires_equipment_key": "",
+      "custom_note": ""
+    },
+    "prp_injections": {
+      "enabled": true,
+      "label": "PRP Injections",
+      "slug": "/treatments/prp-injections/",
+      "content_priority": "optional",
+      "requires_equipment_key": "",
+      "custom_note": ""
+    },
+    "laser_therapy": {
+      "enabled": true,
+      "label": "Laser Therapy",
+      "slug": "/treatments/laser-therapy/",
+      "content_priority": "optional",
+      "requires_equipment_key": "equipment.laser.enabled",
+      "custom_note": ""
+    },
+    "foot_surgery": {
+      "enabled": true,
+      "label": "Foot Surgery",
+      "slug": "/treatments/surgery/",
+      "content_priority": "optional",
+      "requires_equipment_key": "",
+      "custom_note": "Only use surgery positioning when the tenant actually offers surgical care."
+    },
+    "diabetic_foot_care": {
+      "enabled": true,
+      "label": "Diabetic Foot Care",
+      "slug": "/conditions/diabetic-foot-care/",
+      "content_priority": "standard",
+      "requires_equipment_key": "",
+      "custom_note": ""
+    },
+    "pediatric_foot_care": {
+      "enabled": true,
+      "label": "Pediatric Foot Care",
+      "slug": "/conditions/severs-disease/",
+      "content_priority": "optional",
+      "requires_equipment_key": "",
+      "custom_note": ""
+    },
+    "sports_foot_care": {
+      "enabled": true,
+      "label": "Sports Foot Care",
+      "slug": "/conditions/sports-injuries/",
+      "content_priority": "featured",
+      "requires_equipment_key": "",
+      "custom_note": "Supported by public review/photo signals and mirrored site copy describing sports medicine focus."
+    },
+    "nail_care": {
+      "enabled": true,
+      "label": "Nail Care and Nail Removal",
+      "slug": "/conditions/ingrown-toenails/",
+      "content_priority": "standard",
+      "requires_equipment_key": "",
+      "custom_note": "WebMD lists nail infection, thickened nails, and removal/destruction/excision/drainage procedures."
+    },
+    "wound_care": {
+      "enabled": true,
+      "label": "Wound Care",
+      "slug": "/conditions/diabetic-foot-care/",
+      "content_priority": "standard",
+      "requires_equipment_key": "",
+      "custom_note": "WebMD lists venous skin ulcer and debridement-related procedures."
+    }
+  },
+  "navigation": {
+    "_description": "Primary and footer navigation. In the final template, links should be filtered against publish flags and service availability before rendering.",
+    "main": [
+      {
+        "label": "About",
+        "href": "/about/"
+      },
+      {
+        "label": "Patient Resources",
+        "href": "/patient-resources/"
+      },
+      {
+        "label": "Conditions",
+        "href": "/conditions/"
+      },
+      {
+        "label": "Treatments",
+        "href": "/treatments/"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact/"
+      }
+    ],
+    "footer_columns": [
+      {
+        "title": "Conditions",
+        "links": [
+          {
+            "label": "Heel Pain",
+            "href": "/conditions/heel-pain/"
+          },
+          {
+            "label": "Plantar Fasciitis",
+            "href": "/conditions/plantar-fasciitis/"
+          },
+          {
+            "label": "Sports Injuries",
+            "href": "/conditions/sports-injuries/"
+          },
+          {
+            "label": "Diabetic Foot Care",
+            "href": "/conditions/diabetic-foot-care/"
+          }
+        ]
+      },
+      {
+        "title": "Treatments",
+        "links": [
+          {
+            "label": "Shockwave Therapy",
+            "href": "/treatments/shockwave-therapy/"
+          },
+          {
+            "label": "Custom Orthotics",
+            "href": "/treatments/orthotics/"
+          },
+          {
+            "label": "Foot Surgery",
+            "href": "/treatments/surgery/"
+          },
+          {
+            "label": "Nail Care",
+            "href": "/conditions/ingrown-toenails/"
+          }
+        ]
+      },
+      {
+        "title": "Practice",
+        "links": [
+          {
+            "label": "About",
+            "href": "/about/"
+          },
+          {
+            "label": "Contact",
+            "href": "/contact/"
+          },
+          {
+            "label": "Book Appointment",
+            "href": "/appointment/"
+          },
+          {
+            "label": "New Patients",
+            "href": "/new-patients/"
+          },
+          {
+            "label": "Patient Resources",
+            "href": "/patient-resources/"
+          },
+          {
+            "label": "Compare Options",
+            "href": "/compare/"
+          }
+        ]
+      },
+      {
+        "title": "Areas Served",
+        "links": [
+          {
+            "label": "Service Area",
+            "href": "/locations/"
+          }
+        ]
+      }
+    ]
+  },
+  "schema": {
+    "_description": "Structured data defaults. Only include precise geo, price, review, doctor, or service schema when config has accurate values.",
+    "business_type": "MedicalClinic",
+    "medical_specialty": "Podiatric",
+    "price_range": "$$",
+    "latitude": 35.75074267256477,
+    "longitude": -81.34013072272798,
+    "accepts_reservations": true
+  },
+  "features": {
+    "_description": "High-level feature toggles for optional site modules.",
+    "has_blog": true,
+    "has_pricing_page": false,
+    "has_reviews_widget": false,
+    "has_appointment_form": true,
+    "show_doctor_section": true
+  },
+  "custom_value_props": {
+    "_description": "Tenant-specific value props. If disabled or empty, templates should use safe generic value props that do not make unsupported claims.",
+    "enabled": false,
+    "section_title": "Why Patients Choose Us",
+    "section_subtitle": "",
+    "props": []
+  },
+  "publishing": {
+    "_description": "Sitemap-driven publishing controls. The final generator should respect publish flags and tenant overrides when creating pages and navigation.",
+    "sitemap_source": "/data/updated-sitemap.xlsx",
+    "sitemap_tabs": {
+      "pages": "Complete Sitemap",
+      "blog": "Blog Content Matrix"
+    },
+    "publish_column_header": "Publish",
+    "publish_values_on": [
+      "Y",
+      "YES",
+      "TRUE",
+      "1"
+    ],
+    "publish_values_off": [
+      "N",
+      "NO",
+      "FALSE",
+      "0",
+      ""
+    ],
+    "default_when_blank": "off",
+    "respect_sitemap_publish_flag": true,
+    "tenant_overrides": {
+      "force_show": [],
+      "force_hide": []
+    }
+  },
+  "pricing": {
+    "_description": "Pricing display guardrails. Do not show exact prices, financing, HSA/FSA, or package pricing unless enabled and populated here.",
+    "show_pricing": false,
+    "mode": "hide",
+    "currency": "USD",
+    "default_disclaimer": "Pricing varies by condition, provider, insurance, and treatment plan. Contact the clinic to confirm current options.",
+    "show_financing": false,
+    "show_hsa_fsa": false,
+    "items": {}
+  },
+  "insurance_providers": {
+    "_description": "Insurance display guardrails. If enabled is false, do not claim accepted carriers. Use cautious verify-coverage language instead. Only add providers when real insurance details and logo files are available.",
+    "enabled": false,
+    "logo_folder_path": "/insurance-logos/",
+    "logo_folder_readme": "/insurance-logos/README.md",
+    "custom_note": "No practice-owned or site-confirmed insurance list was available in the research notes. Do not list carrier acceptance unless the office confirms it.",
+    "section_title": "Insurance and Payment",
+    "section_subtitle": "Call Carolina Podiatry Center to verify current coverage for your plan.",
+    "display_mode": "text_only",
+    "show_disclaimer": true,
+    "disclaimer": "Insurance participation can vary by provider, plan, and location. Verify coverage with your carrier and Carolina Podiatry Center before your visit.",
+    "fallback_text": "Insurance details were not confirmed from a practice-owned source. Call the office before booking to verify current coverage.",
+    "show_cta": true,
+    "cta_label": "Verify Coverage",
+    "cta_href": "/contact/",
+    "providers": [],
+    "is_demo_data": false
+  },
+  "seo": {
+    "default_title": "Carolina Podiatry Center | Hickory NC Podiatrist",
+    "default_description": "Quality foot care for the long run from Carolina Podiatry Center, a Hickory NC podiatry practice for heel pain, sports injuries, nail care, diabetic foot concerns, and foot surgery.",
+    "site_url": "https://dr-johncock.findfootcare.com"
+  },
+  "client_images": {
+    "_description": "Tenant/client-provided image library. Turn enabled on only when the doctor or clinic supplies real images. These images should be preferred over stock/template images when usage rules match.",
+    "enabled": true,
+    "has_manifest": true,
+    "upload_folder_path": "/client-images/",
+    "manifest_path": "/drcock/client-image-manifest.md",
+    "prefer_client_images_over_template": true,
+    "require_alt_text": true,
+    "require_usage_notes": true,
+    "default_usage_frequency": "normal",
+    "usage_frequency_options": [
+      "hero_once",
+      "high",
+      "normal",
+      "low",
+      "background_only",
+      "do_not_use"
+    ],
+    "placement_options": [
+      "homepage_hero",
+      "inner_hero",
+      "doctor_profile",
+      "clinic_gallery",
+      "equipment_section",
+      "treatment_page",
+      "condition_page",
+      "blog_post",
+      "contact_page",
+      "footer_cta",
+      "do_not_use"
+    ],
+    "image_types": [
+      "doctor_portrait",
+      "staff",
+      "clinic_exterior",
+      "clinic_interior",
+      "exam_room",
+      "equipment",
+      "procedure",
+      "patient_lifestyle",
+      "logo_or_branding",
+      "other"
+    ],
+    "photos": [
+      {
+        "id": "clinic-exterior",
+        "file_path": "/client-images/carolina-podiatry-clinic-exterior.webp",
+        "original_filename": "unnamed (2).webp",
+        "image_type": "clinic_exterior",
+        "alt_text": "Carolina Podiatry Center exterior entrance in Hickory, North Carolina",
+        "description": "Exterior photo of the Carolina Podiatry Center office building and entrance. Best for location, contact, and homepage credibility sections.",
+        "visible_people": "none",
+        "location_context": "Carolina Podiatry Center exterior, Hickory NC",
+        "date_taken": "",
+        "supplied_by": "Google Business Profile download",
+        "rights_status": "client_provided_public_profile",
+        "consent_confirmed": true,
+        "preferred_placements": [
+          "homepage_hero",
+          "contact_page",
+          "clinic_gallery"
+        ],
+        "avoid_placements": [],
+        "related_services": [],
+        "related_conditions": [],
+        "priority": "high",
+        "usage_frequency": "high",
+        "crop_focus": "center",
+        "notes": "Strong local proof image. Good first choice for contact/location sections."
+      },
+      {
+        "id": "waiting-room",
+        "file_path": "/client-images/carolina-podiatry-waiting-room.webp",
+        "original_filename": "unnamed (1).webp",
+        "image_type": "clinic_interior",
+        "alt_text": "Waiting room chairs inside Carolina Podiatry Center",
+        "description": "Waiting room interior with chairs and wall art. Use to make the site feel specific to the clinic.",
+        "visible_people": "none",
+        "location_context": "Clinic waiting room",
+        "date_taken": "",
+        "supplied_by": "Google Business Profile download",
+        "rights_status": "client_provided_public_profile",
+        "consent_confirmed": true,
+        "preferred_placements": [
+          "clinic_gallery",
+          "about_page",
+          "contact_page"
+        ],
+        "avoid_placements": [
+          "homepage_hero"
+        ],
+        "related_services": [],
+        "related_conditions": [],
+        "priority": "normal",
+        "usage_frequency": "normal",
+        "crop_focus": "center",
+        "notes": "Useful supporting interior image."
+      },
+      {
+        "id": "doctor-runner-patient-medal",
+        "file_path": "/client-images/dr-johncock-runner-patient-medal.webp",
+        "original_filename": "unnamed (3).webp",
+        "image_type": "doctor_portrait",
+        "alt_text": "Dr. William Johncock with a runner patient holding a race medal",
+        "description": "Doctor standing with a runner patient in an exam room. Strong sports medicine and patient relationship image.",
+        "visible_people": "Dr. William Johncock and patient",
+        "location_context": "Clinic exam room",
+        "date_taken": "",
+        "supplied_by": "Google Business Profile download",
+        "rights_status": "client_provided_public_profile",
+        "consent_confirmed": false,
+        "preferred_placements": [
+          "doctor_profile",
+          "about_page",
+          "sports_medicine_section"
+        ],
+        "avoid_placements": [
+          "homepage_hero"
+        ],
+        "related_services": [
+          "sports_foot_care",
+          "conservative_care"
+        ],
+        "related_conditions": [
+          "sports_injuries",
+          "heel_pain",
+          "plantar_fasciitis"
+        ],
+        "priority": "high",
+        "usage_frequency": "normal",
+        "crop_focus": "faces",
+        "notes": "Public GBP image, but confirm patient consent before broad use."
+      },
+      {
+        "id": "race-community",
+        "file_path": "/client-images/dr-johncock-race-community.webp",
+        "original_filename": "unnamed (4).webp",
+        "image_type": "patient_lifestyle",
+        "alt_text": "Runner pushing a racing chair during a road race",
+        "description": "Community race image showing active running culture. Useful for sports medicine positioning and long-run brand tone.",
+        "visible_people": "race participants",
+        "location_context": "Road race",
+        "date_taken": "",
+        "supplied_by": "Google Business Profile download",
+        "rights_status": "client_provided_public_profile",
+        "consent_confirmed": false,
+        "preferred_placements": [
+          "sports_medicine_section",
+          "blog_post",
+          "about_page"
+        ],
+        "avoid_placements": [
+          "contact_page"
+        ],
+        "related_services": [
+          "sports_foot_care"
+        ],
+        "related_conditions": [
+          "sports_injuries"
+        ],
+        "priority": "normal",
+        "usage_frequency": "low",
+        "crop_focus": "faces",
+        "notes": "Use sparingly. Strong story image, but confirm permission."
+      },
+      {
+        "id": "doctor-running-shoe",
+        "file_path": "/client-images/dr-johncock-running-shoe.webp",
+        "original_filename": "unnamed (5).webp",
+        "image_type": "doctor_portrait",
+        "alt_text": "Dr. William Johncock holding a running shoe",
+        "description": "Doctor in scrubs holding a running shoe. Excellent for sports foot care, footwear, orthotics, and running injury sections.",
+        "visible_people": "Dr. William Johncock",
+        "location_context": "Clinic or office setting",
+        "date_taken": "",
+        "supplied_by": "Google Business Profile download",
+        "rights_status": "client_provided_public_profile",
+        "consent_confirmed": true,
+        "preferred_placements": [
+          "homepage_hero",
+          "doctor_profile",
+          "about_page",
+          "sports_medicine_section"
+        ],
+        "avoid_placements": [],
+        "related_services": [
+          "sports_foot_care",
+          "custom_orthotics"
+        ],
+        "related_conditions": [
+          "sports_injuries",
+          "heel_pain",
+          "plantar_fasciitis"
+        ],
+        "priority": "high",
+        "usage_frequency": "high",
+        "crop_focus": "face",
+        "notes": "Best people image for homepage or about page."
+      }
+    ],
+    "photo_template": {
+      "id": "",
+      "file_path": "",
+      "original_filename": "",
+      "image_type": "",
+      "alt_text": "",
+      "description": "",
+      "visible_people": "",
+      "location_context": "",
+      "date_taken": "",
+      "supplied_by": "",
+      "rights_status": "client_provided",
+      "consent_confirmed": false,
+      "preferred_placements": [],
+      "avoid_placements": [],
+      "related_services": [],
+      "related_conditions": [],
+      "priority": "normal",
+      "usage_frequency": "normal",
+      "crop_focus": "center",
+      "notes": ""
+    }
+  }
+}

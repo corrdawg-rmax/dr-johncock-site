@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import FAQAccordion from "../components/FAQAccordion.astro";
+import { config } from "../lib/config";
+
+const items = [
+  { question: "How soon can I be seen?", answer: "Appointment availability changes by day and condition. Call or request a consultation so the clinic team can confirm current options." },
+  { question: "Do you accept my insurance?", answer: "Coverage varies by plan and visit type. The safest next step is to call and confirm coverage before booking." },
+  { question: "What should I bring?", answer: "Bring your insurance card, photo ID, medication list, and the shoes you wear most often." },
+  { question: "Can I compare treatment options?", answer: "Yes. The compare page gives patients a simple way to understand common choices before booking." },
+];
+---
+
+<BaseLayout title={`FAQ | ${config.practice.name}`} description="Frequently asked podiatry questions." canonicalPath="/faq">
+  <section class="page-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">FAQ</p>
+      <h1>Frequently Asked Questions</h1>
+      <p class="lede">Short answers for patients before they call or request a consultation.</p>
+    </div>
+  </section>
+  <Breadcrumbs items={[{ label: "FAQ" }]} />
+  <FAQAccordion title="Common Questions" items={items} />
+</BaseLayout>
+
+<style>
+  .page-hero { background: var(--brand-light-bg); padding: var(--space-8) 0; text-align: center; }
+  .eyebrow { color: var(--brand-accent); font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: var(--space-3); text-transform: uppercase; }
+  .lede { color: var(--brand-slate); }
+</style>

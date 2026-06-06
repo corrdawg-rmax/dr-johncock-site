@@ -1,0 +1,230 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTAButton from "../../components/CTAButton.astro";
+import FormEmbed from "../../components/FormEmbed.astro";
+import { conditionPages } from "../../data/clinical";
+import { config, fullAddress } from "../../lib/config";
+
+const address = fullAddress();
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": `${config.seo.site_url}/#clinic`,
+      "name": config.practice.name,
+      "url": config.seo.site_url,
+      "telephone": config.contact.phone,
+      "medicalSpecialty": "Podiatric",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": [config.contact.address_line_1, config.contact.address_line_2].filter(Boolean).join(", "),
+        "addressLocality": config.contact.city,
+        "addressRegion": config.contact.state,
+        "postalCode": config.contact.zip,
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": `${config.seo.site_url}/conditions/#webpage`,
+      "url": `${config.seo.site_url}/conditions/`,
+      "name": "Foot and Ankle Conditions in Hickory NC",
+      "description": "A patient-facing library of foot and ankle conditions treated by Carolina Podiatry Center.",
+      "about": { "@id": `${config.seo.site_url}/#clinic` },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": conditionPages.map((page, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": page.h1,
+          "url": `${config.seo.site_url}/conditions/${page.slug}/`
+        }))
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Foot and Ankle Conditions in Hickory NC | Carolina Podiatry Center"
+  description="Browse foot and ankle conditions treated by Carolina Podiatry Center in Hickory, NC, including heel pain, plantar fasciitis, bunions, ingrown toenails, diabetic foot care, ankle pain, and sports injuries."
+  canonicalPath="/conditions/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="inner-hero">
+    <div class="container inner-hero__grid">
+      <div>
+        <p class="eyebrow">Conditions We Treat</p>
+        <h1>Find the Cause of Your Foot or Ankle Pain</h1>
+        <p class="lede">
+          Carolina Podiatry Center evaluates common foot and ankle problems for patients in Hickory and nearby communities. Start with the symptom closest to what you feel, then request an appointment if the pain is lasting, worsening, or hard to explain.
+        </p>
+        <div class="button-row">
+          <CTAButton href="#conditions-list" variant="primary">Browse Conditions</CTAButton>
+          <CTAButton href="#book" variant="outline">Request Appointment</CTAButton>
+        </div>
+      </div>
+      <img src="/images/podiatrist-loupe-exam.jpg" alt="Podiatrist examining a patient's foot in a clinical setting" loading="eager" />
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Conditions" }]} />
+
+  <section class="section section--tight" id="conditions-list">
+    <div class="container">
+      <div class="compact-head">
+        <h2>Common Foot and Ankle Conditions</h2>
+        <p>Every condition page includes symptoms, likely causes, evaluation notes, treatment links, related blog articles, FAQs, and appointment guidance.</p>
+      </div>
+      <div class="overview-grid">
+        {conditionPages.map((condition) => (
+          <a href={`/conditions/${condition.slug}/`} class="overview-card">
+            <img src={condition.icon} alt="" width="34" height="34" />
+            <h3>{condition.eyebrow}</h3>
+            <p>{condition.overview}</p>
+            <span>Learn more</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container condition-band">
+      <div>
+        <p class="eyebrow">Local Foot Care</p>
+        <h2>Not Sure Which Page Fits?</h2>
+        <p>
+          Foot symptoms overlap. Heel pain can involve the plantar fascia, Achilles tendon, bone, nerve, or shoe pressure. Forefoot pain can be joint, nerve, skin, or nail related. A visit at {address} can help sort out what is actually causing the problem.
+        </p>
+      </div>
+      <div class="condition-band__links">
+        <a href="/treatments/">Compare treatment options</a>
+        <a href="/blog/">Read patient guides</a>
+        <a href="/contact/">Contact the office</a>
+      </div>
+    </div>
+  </section>
+
+  <FormEmbed slug="appointment" title="Ask About Foot or Ankle Pain" />
+</BaseLayout>
+
+<style>
+  .inner-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+  }
+  .inner-hero__grid {
+    align-items: center;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: 1fr 0.85fr;
+  }
+  .inner-hero img {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    width: 100%;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .lede {
+    color: var(--brand-slate);
+    font-size: 1.12rem;
+    max-width: 62ch;
+  }
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .compact-head {
+    margin-bottom: var(--space-5);
+    max-width: 760px;
+  }
+  .compact-head p,
+  .condition-band p {
+    color: var(--brand-slate);
+  }
+  .overview-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .overview-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    padding: var(--space-5);
+    text-decoration: none;
+  }
+  .overview-card:hover {
+    box-shadow: var(--shadow-md);
+    color: inherit;
+  }
+  .overview-card img {
+    margin-bottom: var(--space-4);
+  }
+  .overview-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--space-2);
+  }
+  .overview-card p {
+    color: var(--brand-slate);
+    font-size: 0.95rem;
+  }
+  .overview-card span {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .condition-band {
+    align-items: center;
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr 0.45fr;
+  }
+  .condition-band__links {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .condition-band__links a {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-sm);
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    padding: var(--space-4);
+    text-decoration: none;
+  }
+  @media (max-width: 950px) {
+    .inner-hero__grid,
+    .overview-grid,
+    .condition-band {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 650px) {
+    .inner-hero__grid,
+    .overview-grid,
+    .condition-band {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

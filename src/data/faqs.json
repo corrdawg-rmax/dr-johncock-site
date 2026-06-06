@@ -1,0 +1,442 @@
+{
+  "_meta": {
+    "purpose": "FAQ question library , use as a guide for which questions to include on each page. Not exhaustive. Mix and match per page; aim for 4-6 questions per page that cover definition, symptoms/diagnosis, treatment, prevention/when-to-see-doctor.",
+    "source": "Curated from presentation-analysis.xlsx (37 topics × 10 questions = 370 source questions, narrowed to ~5 per topic). Plus one tenant-customizable bucket: 'clinic_specific'.",
+    "structure": "Each top-level key is a sitemap slug or a special bucket. The page should pull from this when rendering its FAQ block.",
+    "writing_rule": "Answer in 30-60 words, Grade 8 reading level, in the practice voice from content-style-guide.md. No em dashes, no emojis.",
+    "tenant_customization": "The 'clinic_specific' topic is for site-wide FAQs unique to this practice (walk-in policy, parking, language support, after-hours, etc.). Empty by default. Each tenant fills in 4-8 questions that get rendered on /contact, /about, and the homepage FAQ section.",
+    "last_updated": "2026-05-15"
+  },
+
+  "clinic_specific": {
+    "topic": "About This Clinic (tenant-customizable)",
+    "_note": "Renders on /contact, /about, and the homepage FAQ section. Add 4-8 questions specific to this clinic's policies, amenities, and operations. Empty array below for the demo build. Replace with real questions when a tenant is assigned.",
+    "example_questions_do_not_publish": [
+      "Do you offer same-day or walk-in appointments?",
+      "Where do I park when I arrive for my visit?",
+      "Can I bring a family member or caregiver to my appointment?",
+      "Do you offer after-hours emergency care?",
+      "Is your office wheelchair accessible?",
+      "Do you have staff who speak languages other than English?"
+    ],
+    "questions": []
+  },
+
+  "/conditions/achilles-tendinitis": {
+    "topic": "Achilles Tendinitis",
+    "questions": [
+      "What is the difference between Achilles tendinitis and a torn Achilles?",
+      "How long does Achilles tendinitis typically take to heal?",
+      "What stretches help relieve Achilles tendon pain?",
+      "What type of shoes are best for Achilles tendinitis?",
+      "When should I see a foot doctor for Achilles pain?"
+    ]
+  },
+
+  "/conditions/ankle-sprain": {
+    "topic": "Ankle Sprain",
+    "questions": [
+      "How do I know if my ankle is sprained or broken?",
+      "What are the three grades of ankle sprain?",
+      "How long does a typical ankle sprain take to heal?",
+      "Why does my ankle keep spraining repeatedly?",
+      "When can I return to sports after an ankle sprain?"
+    ]
+  },
+
+  "/conditions/foot-ankle-arthritis": {
+    "topic": "Arthritis",
+    "questions": [
+      "What does arthritis in the foot feel like?",
+      "What is the difference between osteoarthritis and rheumatoid arthritis in the foot?",
+      "Can foot arthritis be reversed?",
+      "What shoes are best for arthritis in the feet?",
+      "When should you see a foot doctor for joint pain?"
+    ]
+  },
+
+  "/conditions/athletes-foot": {
+    "topic": "Athlete's Foot",
+    "questions": [
+      "What causes athlete's foot?",
+      "Is athlete's foot contagious?",
+      "How long does it take for athlete's foot to clear up?",
+      "Should I see a doctor for athlete's foot or treat it myself?",
+      "How do I prevent athlete's foot in shared showers?"
+    ]
+  },
+
+  "/conditions/bunions": {
+    "topic": "Bunion",
+    "questions": [
+      "What causes a bunion to form?",
+      "Can bunions be corrected without surgery?",
+      "Do bunion correctors and toe splints actually work?",
+      "How do I know if my bunion is severe enough for surgery?",
+      "What is the recovery time for bunion surgery?"
+    ]
+  },
+
+  "/conditions/corns-calluses": {
+    "topic": "Calluses and Corns",
+    "questions": [
+      "What is the difference between a callus and a corn?",
+      "Why do calluses keep coming back after removal?",
+      "Is it safe to cut calluses at home?",
+      "Why are calluses especially dangerous for diabetics?",
+      "Can orthotics prevent calluses from forming?"
+    ]
+  },
+
+  "/conditions/cavus-foot": {
+    "topic": "Cavus Foot (High Arch)",
+    "questions": [
+      "What causes high arches in the feet?",
+      "Can high arches cause ankle sprains?",
+      "What type of shoes are best for high arches?",
+      "Do orthotics help with cavus foot?",
+      "When should someone with high arches see a podiatrist?"
+    ]
+  },
+
+  "/conditions/cold-injuries": {
+    "topic": "Cold Injuries (Frostbite and Chilblains)",
+    "questions": [
+      "What is the difference between frostbite and chilblains?",
+      "What are the first signs of frostbite on feet?",
+      "What should you do if you suspect frostbite on your feet?",
+      "Are diabetics more at risk for cold injuries to the feet?",
+      "How do you prevent cold injuries to the feet during winter?"
+    ]
+  },
+
+  "/conditions/ganglion-cyst": {
+    "topic": "Ganglion Cyst",
+    "questions": [
+      "What is a ganglion cyst on the foot?",
+      "Can a ganglion cyst go away on its own?",
+      "How is a ganglion cyst removed from the foot?",
+      "Do ganglion cysts come back after being drained?",
+      "Should I see a podiatrist for a bump on top of my foot?"
+    ]
+  },
+
+  "/conditions/diabetic-foot-care": {
+    "topic": "Diabetes and Foot Care",
+    "questions": [
+      "Why do diabetics need to see a foot doctor regularly?",
+      "How often should a diabetic have a foot exam?",
+      "What are the signs of a diabetic foot ulcer?",
+      "What kind of shoes should diabetics wear?",
+      "What should a diabetic do about a cut or blister on their foot?"
+    ]
+  },
+
+  "/conditions/bone-spurs": {
+    "topic": "Bone Spurs (Exostosis)",
+    "questions": [
+      "What is a bone spur on the foot?",
+      "Are bone spurs on the foot always painful?",
+      "Is a heel spur the same as plantar fasciitis?",
+      "Can bone spurs go away without surgery?",
+      "Do orthotics help with bone spurs?"
+    ]
+  },
+
+  "/conditions/flat-feet": {
+    "topic": "Flat Feet",
+    "questions": [
+      "What causes flat feet in adults?",
+      "What is posterior tibial tendon dysfunction?",
+      "Can flat feet cause knee or hip pain?",
+      "Do arch supports help flat feet?",
+      "What are the best shoes for flat feet?"
+    ]
+  },
+
+  "/conditions/metatarsalgia": {
+    "topic": "Forefoot Pain (Metatarsalgia)",
+    "questions": [
+      "What causes pain in the ball of the foot?",
+      "How is metatarsalgia different from Morton's neuroma?",
+      "What are metatarsal pads and do they help?",
+      "What shoes are best for metatarsalgia?",
+      "Why does the ball of my foot hurt more in the morning?"
+    ]
+  },
+
+  "/conditions/foot-fractures": {
+    "topic": "Foot Fractures",
+    "questions": [
+      "How do I know if I have a fracture or a sprain?",
+      "What is a stress fracture in the foot?",
+      "How long does a broken metatarsal take to heal?",
+      "Do all foot fractures need a cast?",
+      "When does a foot fracture need surgery?"
+    ]
+  },
+
+  "/conditions/hallux-limitus": {
+    "topic": "Hallux Limitus and Hallux Rigidus",
+    "questions": [
+      "What is hallux rigidus?",
+      "What is the difference between hallux limitus and hallux rigidus?",
+      "Can hallux rigidus be treated without surgery?",
+      "What type of shoes help with hallux rigidus?",
+      "Does hallux rigidus always get worse?"
+    ]
+  },
+
+  "/conditions/gout": {
+    "topic": "Gout",
+    "questions": [
+      "Why does gout usually attack the big toe?",
+      "What foods trigger gout flare-ups?",
+      "How long does a gout attack last?",
+      "Can gout be cured permanently?",
+      "What medications treat gout?"
+    ]
+  },
+
+  "/conditions/haglunds-deformity": {
+    "topic": "Haglund's Deformity",
+    "questions": [
+      "What is a Haglund's deformity?",
+      "What causes the bony bump at the back of the heel?",
+      "Can Haglund's deformity go away without surgery?",
+      "What shoes make Haglund's deformity worse?",
+      "How is Haglund's deformity different from a heel spur?"
+    ]
+  },
+
+  "/conditions/hammertoes": {
+    "topic": "Hammertoes",
+    "questions": [
+      "What is a hammertoe?",
+      "What is the difference between a hammertoe, mallet toe, and claw toe?",
+      "Can hammertoes be fixed without surgery?",
+      "What happens if you ignore a hammertoe?",
+      "How long does hammertoe surgery recovery take?"
+    ]
+  },
+
+  "/conditions/heel-fissures": {
+    "topic": "Heel Fissures (Cracked Heels)",
+    "questions": [
+      "What causes cracked heels?",
+      "Can cracked heels become infected?",
+      "Why are cracked heels dangerous for diabetics?",
+      "Should I use a pumice stone on cracked heels?",
+      "When should I see a doctor for cracked heels?"
+    ]
+  },
+
+  "/conditions/ingrown-toenails": {
+    "topic": "Ingrown Toenails",
+    "questions": [
+      "What causes ingrown toenails?",
+      "Can I treat an ingrown toenail at home?",
+      "How does a podiatrist remove an ingrown toenail?",
+      "Will an ingrown toenail grow back after removal?",
+      "Why do ingrown toenails keep coming back?"
+    ]
+  },
+
+  "/conditions/fungal-toenails": {
+    "topic": "Nail Fungus (Onychomycosis)",
+    "questions": [
+      "What causes toenail fungus?",
+      "Can toenail fungus go away on its own?",
+      "What is the most effective treatment for toenail fungus?",
+      "Does laser treatment work for toenail fungus?",
+      "Why does toenail fungus keep coming back?"
+    ]
+  },
+
+  "/conditions/neuromas": {
+    "topic": "Morton's Neuroma",
+    "questions": [
+      "What is Morton's neuroma?",
+      "What does Morton's neuroma feel like?",
+      "What shoes make a neuroma worse?",
+      "Do cortisone injections help Morton's neuroma?",
+      "How long is recovery from neuroma surgery?"
+    ]
+  },
+
+  "/conditions/peripheral-neuropathy": {
+    "topic": "Peripheral Neuropathy",
+    "questions": [
+      "What are the early signs of neuropathy in the feet?",
+      "Is neuropathy in the feet always caused by diabetes?",
+      "Can neuropathy in the feet be reversed?",
+      "Why is neuropathy dangerous for your feet?",
+      "What should you do if you lose feeling in your feet?"
+    ]
+  },
+
+  "/conditions/onycholysis": {
+    "topic": "Onycholysis (Nail Detachment)",
+    "questions": [
+      "What causes a toenail to separate from the nail bed?",
+      "Is onycholysis the same as toenail fungus?",
+      "Will a detached toenail reattach to the nail bed?",
+      "How long does it take for a detached toenail to grow back?",
+      "When should I see a podiatrist for a lifting toenail?"
+    ]
+  },
+
+  "/conditions/peroneal-tendon-injury": {
+    "topic": "Peroneal Tendon Problems",
+    "questions": [
+      "What are the peroneal tendons?",
+      "What does a peroneal tendon tear feel like?",
+      "Can a peroneal tendon tear heal without surgery?",
+      "Why does the outside of my ankle hurt?",
+      "Is peroneal tendinitis related to ankle sprains?"
+    ]
+  },
+
+  "/conditions/plantar-fasciitis": {
+    "topic": "Plantar Fasciitis",
+    "questions": [
+      "What is plantar fasciitis?",
+      "Why does my heel hurt when I first get out of bed?",
+      "How long does plantar fasciitis take to heal?",
+      "Do heel spurs cause plantar fasciitis?",
+      "Does shockwave therapy work for plantar fasciitis?"
+    ]
+  },
+
+  "/conditions/plantar-fibroma": {
+    "topic": "Plantar Fibroma",
+    "questions": [
+      "What is a plantar fibroma?",
+      "Is a plantar fibroma cancerous?",
+      "Can a plantar fibroma go away on its own?",
+      "How is a plantar fibroma treated without surgery?",
+      "When should I see a doctor about a lump in my foot?"
+    ]
+  },
+
+  "/conditions/porokeratoma": {
+    "topic": "Porokeratoma",
+    "questions": [
+      "What is a porokeratoma?",
+      "How is a porokeratoma different from a corn or wart?",
+      "How is a porokeratoma treated?",
+      "Does a porokeratoma need a biopsy?",
+      "Why does my podiatrist check hard spots on my feet?"
+    ]
+  },
+
+  "/conditions/sesamoiditis": {
+    "topic": "Sesamoiditis",
+    "questions": [
+      "What is sesamoiditis?",
+      "Where are the sesamoid bones in the foot?",
+      "How long does sesamoiditis take to heal?",
+      "What shoes are best for sesamoiditis?",
+      "When is surgery needed for sesamoiditis?"
+    ]
+  },
+
+  "/conditions/severs-disease": {
+    "topic": "Sever's Disease",
+    "questions": [
+      "What is Sever's disease?",
+      "At what age does Sever's disease occur?",
+      "Does my child need to stop playing sports with Sever's disease?",
+      "How long does Sever's disease last?",
+      "When should I take my child to a foot doctor for heel pain?"
+    ]
+  },
+
+  "/conditions/shin-splints": {
+    "topic": "Shin Splints",
+    "questions": [
+      "What causes shin splints?",
+      "How do I know if I have shin splints or a stress fracture?",
+      "Can I run with shin splints?",
+      "How long do shin splints take to heal?",
+      "What type of shoes prevent shin splints?"
+    ]
+  },
+
+  "/conditions/plantar-warts": {
+    "topic": "Plantar Warts",
+    "questions": [
+      "What causes plantar warts?",
+      "How can you tell if it is a wart or a callus?",
+      "Are plantar warts contagious?",
+      "What is the most effective treatment for plantar warts?",
+      "What is Swift microwave therapy for warts?"
+    ]
+  },
+
+  "/conditions/diabetic-foot-ulcer": {
+    "topic": "Diabetic Foot Ulcer",
+    "questions": [
+      "What is a diabetic foot ulcer?",
+      "How are diabetic foot ulcers treated?",
+      "Can a foot ulcer heal on its own?",
+      "What are the warning signs of a foot wound infection?",
+      "Can foot ulcers lead to amputation?"
+    ]
+  },
+
+  "/conditions/capsulitis": {
+    "topic": "Capsulitis and Plantar Plate Tear",
+    "questions": [
+      "What is capsulitis of the second toe?",
+      "What is a plantar plate tear?",
+      "How is a plantar plate tear diagnosed?",
+      "Can ball-of-foot pain go away on its own?",
+      "Is surgery needed for a plantar plate tear?"
+    ]
+  },
+
+  "/conditions/post-traumatic-arthritis": {
+    "topic": "Post-Traumatic Arthritis",
+    "questions": [
+      "What is post-traumatic arthritis?",
+      "How long after an injury can arthritis develop?",
+      "Can post-traumatic arthritis be reversed?",
+      "What treatments help post-traumatic arthritis of the foot?",
+      "When does post-traumatic arthritis need surgery?"
+    ]
+  },
+
+  "/treatments/ankle-foot-orthosis": {
+    "topic": "AFO (Ankle Foot Orthosis)",
+    "questions": [
+      "What conditions require an ankle foot orthosis?",
+      "How long do you have to wear an AFO each day?",
+      "What is the difference between a custom and off-the-shelf AFO?",
+      "Does insurance cover ankle foot orthoses?",
+      "What type of shoes work with an AFO?"
+    ]
+  },
+
+  "/treatments/surgery": {
+    "topic": "Foot Surgery (Pre-Surgical Discussion)",
+    "questions": [
+      "What should I ask my foot surgeon before the procedure?",
+      "How do I prepare my home for foot surgery recovery?",
+      "What type of anesthesia is used for foot surgery?",
+      "What are the risks of foot surgery?",
+      "How soon can I return to work after foot or ankle surgery?"
+    ]
+  },
+
+  "/treatments/diagnostic-ultrasound": {
+    "topic": "Diagnostic Ultrasound",
+    "questions": [
+      "What is a diagnostic ultrasound for the foot?",
+      "What foot conditions can ultrasound detect?",
+      "Is a foot ultrasound better than an MRI?",
+      "What is an ultrasound-guided injection?",
+      "Does insurance cover foot and ankle ultrasound?"
+    ]
+  }
+}

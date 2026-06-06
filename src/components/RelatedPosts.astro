@@ -1,0 +1,104 @@
+---
+import { getCategory, getRelatedPosts } from "../data/blog";
+
+export interface Props {
+  currentSlug: string;
+  category: string;
+}
+
+const { currentSlug, category } = Astro.props;
+const related = getRelatedPosts(currentSlug, category, 3);
+const categoryLabel = getCategory(category)?.name || "Related";
+---
+
+{related.length > 0 && (
+  <section class="related-posts">
+    <div class="related-posts__head">
+      <p>{categoryLabel}</p>
+      <h2>Related Posts</h2>
+    </div>
+    <div class="related-posts__grid">
+      {related.map((post) => (
+        <a href={post.href} class="related-card">
+          <img src={post.image} alt={post.title} loading="lazy" />
+          <div class="related-card__body">
+            <span>{categoryLabel}</span>
+            <h3>{post.title}</h3>
+            <p>{post.excerpt}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-posts {
+    margin-top: var(--space-8);
+    padding-top: var(--space-7);
+    border-top: 1px solid var(--brand-border);
+  }
+  .related-posts__head {
+    text-align: center;
+    margin-bottom: var(--space-5);
+  }
+  .related-posts__head p {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+  }
+  .related-posts__head h2 {
+    font-size: 1.8rem;
+    margin: 0;
+  }
+  .related-posts__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  @media (max-width: 850px) {
+    .related-posts__grid { grid-template-columns: 1fr; }
+  }
+  .related-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    color: inherit;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+  }
+  .related-card:hover {
+    color: inherit;
+    box-shadow: var(--shadow-md);
+  }
+  .related-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+  }
+  .related-card__body {
+    padding: var(--space-4);
+  }
+  .related-card__body span {
+    color: var(--brand-secondary);
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+  }
+  .related-card__body h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-2);
+  }
+  .related-card__body p {
+    color: var(--brand-slate);
+    font-size: 0.92rem;
+  }
+</style>

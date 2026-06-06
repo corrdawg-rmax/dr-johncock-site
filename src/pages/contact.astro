@@ -1,0 +1,171 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import FormEmbed from "../components/FormEmbed.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { config, telLink, fullAddress, getClientImage } from "../lib/config";
+
+const daysOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+const address = fullAddress();
+const contactImage = getClientImage("contact_page", "clinic_exterior");
+---
+
+<BaseLayout
+  title="Contact Us | Primary Foot Clinic"
+  description="Reach the foot and ankle clinic. Call, request an appointment online, or stop by during business hours once tenant contact details are configured."
+  canonicalPath="/contact"
+>
+  <section class="page-header">
+    <div class="container--narrow">
+      <h1>Contact us</h1>
+      <p class="page-header__sub">Call to speak with the clinic team, or request an appointment online. Scheduling, coverage, and location details can be confirmed before booking.</p>
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Contact" }]} />
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Reach us</h2>
+
+          <div class="info-block">
+            <h3>Phone</h3>
+            <p><a href={telLink()} class="info-block__primary">{config.contact.phone}</a></p>
+            <p class="info-block__note">Open during business hours. Voicemail outside hours, returned next business day.</p>
+          </div>
+
+          {address && (
+            <div class="info-block">
+              <h3>Address</h3>
+              <p>{address}</p>
+              {config.contact.google_maps_link && <p><a href={config.contact.google_maps_link} target="_blank" rel="noopener">Get directions</a></p>}
+            </div>
+          )}
+
+          <div class="info-block">
+            <h3>Hours</h3>
+            <table class="hours-table">
+              {daysOrder.map((day) => (
+                <tr>
+                  <td class="hours-table__day">{day.charAt(0).toUpperCase() + day.slice(1)}</td>
+                  <td class="hours-table__time">{config.hours[day]}</td>
+                </tr>
+              ))}
+            </table>
+          </div>
+
+          <div class="info-block">
+            <h3>What to bring</h3>
+            <ul>
+              <li>Insurance card and photo ID</li>
+              <li>List of current medications</li>
+              <li>The shoes you wear most often (we look at wear patterns)</li>
+              <li>X-rays from another provider if you have them</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <FormEmbed slug="appointment" title="Request an appointment" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {(config.contact.google_maps_embed_url || contactImage) && (
+    <section class="section section--alt">
+      <div class="container location-panel">
+        {contactImage && <img src={contactImage.file_path} alt={contactImage.alt_text} loading="lazy" />}
+        {config.contact.google_maps_embed_url && (
+          <div class="location-panel__map">
+            <iframe
+              src={config.contact.google_maps_embed_url}
+              width="600"
+              height="450"
+              style="border:0;"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title={`${config.practice.name} Google Business Profile map`}
+            ></iframe>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: var(--brand-light-bg);
+    padding: var(--space-9) 0 var(--space-7);
+    border-bottom: 1px solid var(--brand-border);
+  }
+  .page-header h1 { text-align: center; margin-bottom: var(--space-3); }
+  .page-header__sub {
+    text-align: center;
+    color: var(--brand-slate);
+    font-size: 1.1rem;
+    max-width: 55ch;
+    margin: 0 auto;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-8);
+  }
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  .contact-info h2 { margin-bottom: var(--space-5); }
+  .info-block { margin-bottom: var(--space-6); }
+  .info-block h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--brand-secondary);
+    margin-bottom: var(--space-3);
+  }
+  .info-block__primary {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    text-decoration: none;
+  }
+  .info-block__note { font-size: 0.9rem; color: var(--brand-slate); }
+  .hours-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .hours-table tr { border-bottom: 1px solid var(--brand-border); }
+  .hours-table tr:last-child { border-bottom: none; }
+  .hours-table td { padding: var(--space-2) 0; }
+  .hours-table__day { font-weight: 600; }
+  .hours-table__time { text-align: right; color: var(--brand-slate); }
+  .contact-form :global(.form-embed) { padding: 0; margin: 0; }
+  .contact-form :global(.form-embed .container--narrow) { padding: 0; }
+  .location-panel {
+    align-items: stretch;
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 0.75fr 1.45fr;
+  }
+  .location-panel img,
+  .location-panel iframe {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    height: 100%;
+    min-height: 500px;
+    object-fit: cover;
+    width: 100%;
+  }
+  .location-panel__map {
+    min-height: 500px;
+  }
+  @media (max-width: 850px) {
+    .location-panel { grid-template-columns: 1fr; }
+  }
+</style>

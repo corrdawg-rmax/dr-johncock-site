@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { config, getClientImage } from "../lib/config";
+
+const doctorPhoto = getClientImage("doctor_profile") || { file_path: config.doctor.photo || "/images/doctor-patient-consultation.png", alt_text: `${config.doctor.name} portrait` };
+---
+
+<BaseLayout title={`Dr. ${config.doctor.name} | ${config.practice.name}`} description={`Doctor profile for Dr. ${config.doctor.name}, ${config.doctor.credentials}.`} canonicalPath="/doctor">
+  <section class="page-hero">
+    <div class="container page-hero__grid">
+      <div>
+        <p class="eyebrow">Doctor Profile</p>
+        <h1>Dr. {config.doctor.name}, {config.doctor.credentials}</h1>
+        <p class="lede">{config.doctor.title}. This page keeps credential and specialty language tied to the assigned doctor config.</p>
+        <div class="button-row">
+          <CTAButton href="/about" variant="primary">About the Practice</CTAButton>
+          <CTAButton href="/#book" variant="outline">Request Consultation</CTAButton>
+        </div>
+      </div>
+      <img src={doctorPhoto.file_path} alt={doctorPhoto.alt_text} loading="eager" />
+    </div>
+  </section>
+  <Breadcrumbs items={[{ label: "Doctor" }]} />
+  <section class="section section--tight">
+    <div class="container--narrow copy">
+      <h2>Clinical Focus</h2>
+      <p>{config.doctor.bio_short}</p>
+      <p>Final publication should confirm education, board status, licensing, hospital affiliations, and current specialties directly with the office.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero { background: var(--brand-light-bg); padding: var(--space-8) 0; }
+  .page-hero__grid { align-items: center; display: grid; gap: var(--space-7); grid-template-columns: 1fr 0.8fr; }
+  .page-hero img { aspect-ratio: 4 / 3; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); object-fit: cover; width: 100%; }
+  .eyebrow { color: var(--brand-accent); font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: var(--space-3); text-transform: uppercase; }
+  .lede, .copy p { color: var(--brand-slate); }
+  .button-row { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+  @media (max-width: 800px) { .page-hero__grid { grid-template-columns: 1fr; } }
+</style>

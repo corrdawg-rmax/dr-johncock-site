@@ -1,0 +1,155 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { config } from "../lib/config";
+
+const displayCity = config.practice.city || "[CITY]";
+const displayState = config.practice.state || "[STATE]";
+
+const comparisonCards = [
+  {
+    title: "Home Care vs Office Visit",
+    bestFor: "Mild, new symptoms without swelling, wounds, or numbness",
+    compare: "Home care may help early soreness. A visit is better when pain lasts, worsens, or changes how you walk.",
+    href: "/blog/heel-pain-wont-go-away/",
+  },
+  {
+    title: "Orthotics vs Shoe Changes",
+    bestFor: "Arch pain, heel pain, flat feet, and repeated pressure problems",
+    compare: "Shoe changes are usually the first step. Orthotics add more targeted support when simpler changes are not enough.",
+    href: "/treatments/orthotics/",
+  },
+  {
+    title: "Shockwave vs Injection Options",
+    bestFor: "Stubborn heel or tendon pain after conservative care",
+    compare: "Shockwave is device-based and non-surgical. Injection choices depend on diagnosis, risk, and clinic protocol.",
+    href: "/treatments/shockwave-therapy/",
+  },
+  {
+    title: "Conservative Care vs Surgery",
+    bestFor: "Bunions, hammertoes, chronic pain, and structural problems",
+    compare: "Conservative care aims to reduce symptoms and avoid escalation. Surgery is considered when pain or function still does not improve.",
+    href: "/treatments/surgery/",
+  },
+];
+---
+
+<BaseLayout
+  title={`Compare Podiatry Care Options | ${displayCity}, ${displayState}`}
+  description={`Compare common foot and ankle care options for patients in ${displayCity}, ${displayState}.`}
+  canonicalPath="/compare"
+>
+  <section class="inner-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">Compare Care Options</p>
+      <h1>Understand the Next Step Before You Book</h1>
+      <p class="lede">This overview gives patients a clear way to compare common treatment paths without making unsupported promises about outcomes, equipment, or speed.</p>
+      <div class="button-row">
+        <CTAButton href="/treatments" variant="primary">Browse Treatments</CTAButton>
+        <CTAButton href="/conditions" variant="outline">Browse Conditions</CTAButton>
+      </div>
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Compare" }]} />
+
+  <section class="section section--tight">
+    <div class="container compare-grid">
+      {comparisonCards.map((card) => (
+        <a href={card.href} class="compare-card">
+          <h2>{card.title}</h2>
+          <dl>
+            <dt>Often useful for</dt>
+            <dd>{card.bestFor}</dd>
+            <dt>How to think about it</dt>
+            <dd>{card.compare}</dd>
+          </dl>
+          <span>Read more</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container--narrow simple-copy">
+      <h2>Where This Belongs in Navigation</h2>
+      <p>
+        Compare content fits best under Patient Resources because it helps patients make sense of choices before they know the exact treatment they need. It should also appear on the homepage resource cards and in related blog/article links when the topic matches.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .inner-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+    text-align: center;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .lede,
+  .compare-card dd,
+  .simple-copy p {
+    color: var(--brand-slate);
+  }
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-5);
+  }
+  .compare-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .compare-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    padding: var(--space-5);
+    text-decoration: none;
+  }
+  .compare-card h2 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-4);
+  }
+  .compare-card dl {
+    margin: 0;
+  }
+  .compare-card dt {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-top: var(--space-3);
+    text-transform: uppercase;
+  }
+  .compare-card dd {
+    margin: var(--space-1) 0 0;
+  }
+  .compare-card span {
+    color: var(--brand-accent);
+    display: inline-flex;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    margin-top: var(--space-4);
+  }
+  @media (max-width: 750px) {
+    .compare-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

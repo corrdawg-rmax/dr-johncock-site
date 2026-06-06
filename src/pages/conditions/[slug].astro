@@ -1,0 +1,340 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTAButton from "../../components/CTAButton.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import FormEmbed from "../../components/FormEmbed.astro";
+import { conditionPages } from "../../data/clinical";
+import { getPostsByCategory } from "../../data/blog";
+import { config } from "../../lib/config";
+
+export const getStaticPaths = () =>
+  conditionPages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+
+const { page } = Astro.props;
+const relatedPosts = getPostsByCategory(page.blogCategory, 3);
+const canonicalPath = `/conditions/${page.slug}/`;
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": `${config.seo.site_url}/#clinic`,
+      "name": config.practice.name,
+      "url": config.seo.site_url,
+      "telephone": config.contact.phone,
+      "medicalSpecialty": "Podiatric",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": [config.contact.address_line_1, config.contact.address_line_2].filter(Boolean).join(", "),
+        "addressLocality": config.contact.city,
+        "addressRegion": config.contact.state,
+        "postalCode": config.contact.zip,
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "MedicalWebPage",
+      "@id": `${config.seo.site_url}${canonicalPath}#webpage`,
+      "url": `${config.seo.site_url}${canonicalPath}`,
+      "name": page.title,
+      "description": page.metaDescription,
+      "about": [
+        { "@type": "MedicalCondition", "name": page.eyebrow },
+        { "@id": `${config.seo.site_url}/#clinic` }
+      ],
+      "isPartOf": { "@id": `${config.seo.site_url}/#website` }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${config.seo.site_url}${canonicalPath}#faq`,
+      "mainEntity": page.faqs.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.metaDescription}
+  canonicalPath={canonicalPath}
+  ogImage={page.image}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="detail-hero">
+    <div class="container detail-hero__grid">
+      <div>
+        <p class="eyebrow">{page.eyebrow}</p>
+        <h1>{page.h1}</h1>
+        <p class="lede">{page.lede}</p>
+        <div class="button-row">
+          <CTAButton href="#book" variant="primary">Request Appointment</CTAButton>
+          <CTAButton href="/conditions/" variant="outline">All Conditions</CTAButton>
+        </div>
+      </div>
+      <img src={page.image} alt={page.imageAlt} loading="eager" />
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Conditions", href: "/conditions/" }, { label: page.eyebrow }]} />
+
+  <section class="section section--tight">
+    <div class="container detail-grid">
+      <aside class="quick-card">
+        <img src={page.icon} alt="" width="42" height="42" />
+        <h2>Quick Clues</h2>
+        <ul>
+          {page.quickFacts.map((fact) => <li>{fact}</li>)}
+        </ul>
+      </aside>
+
+      <div class="detail-copy">
+        <h2>Symptoms That May Point to {page.eyebrow}</h2>
+        <ul class="check-list">
+          {page.signs.map((sign) => <li>{sign}</li>)}
+        </ul>
+
+        <h2>Common Causes</h2>
+        <p>{page.causes}</p>
+
+        <h2>How a Hickory Podiatrist May Evaluate It</h2>
+        <p>{page.evaluation}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container">
+      <div class="compact-head">
+        <p class="eyebrow">Treatment Path</p>
+        <h2>Care Options Patients Often Discuss</h2>
+        <p>The right plan depends on the diagnosis, medical history, footwear, activity level, and whether warning signs are present.</p>
+      </div>
+      <div class="card-grid card-grid--three">
+        {page.carePlan.map((item) => (
+          <a href={item.href} class="info-card">
+            <h3>{item.label}</h3>
+            <p>{item.text}</p>
+            <span>View page</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container split-content">
+      <div>
+        <h2>What You Can Do Before Your Visit</h2>
+        <ul class="check-list">
+          {page.homeCare.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="callout">
+        <h2>When to Call</h2>
+        <ul>
+          {page.whenToCall.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container">
+      <div class="compact-head">
+        <p class="eyebrow">Related Reading</p>
+        <h2>Helpful Local Foot Care Guides</h2>
+      </div>
+      <div class="card-grid card-grid--three">
+        {relatedPosts.map((post) => (
+          <a href={post.href} class="post-card">
+            <img src={post.image} alt={post.imageAlt} loading="lazy" />
+            <div>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="compact-head">
+        <p class="eyebrow">Internal Links</p>
+        <h2>Related Pages</h2>
+      </div>
+      <div class="card-grid card-grid--two">
+        {page.relatedLinks.map((item) => (
+          <a href={item.href} class="info-card">
+            <h3>{item.label}</h3>
+            <p>{item.text}</p>
+            <span>Open page</span>
+          </a>
+        ))}
+      </div>
+      <p class="medical-note">This page is educational and does not diagnose your condition. If symptoms are severe, spreading, infected, or related to diabetes or a wound, seek medical guidance promptly.</p>
+    </div>
+  </section>
+
+  <FAQAccordion title={`${page.eyebrow} FAQs`} items={page.faqs} />
+  <FormEmbed slug="appointment" title={`Ask About ${page.eyebrow}`} />
+</BaseLayout>
+
+<style>
+  .detail-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+  }
+  .detail-hero__grid,
+  .detail-grid,
+  .split-content {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .detail-hero__grid {
+    align-items: center;
+    grid-template-columns: 1fr 0.85fr;
+  }
+  .detail-hero img {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    width: 100%;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .lede,
+  .compact-head p,
+  .detail-copy p,
+  .info-card p,
+  .post-card p,
+  .medical-note {
+    color: var(--brand-slate);
+  }
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .detail-grid {
+    align-items: start;
+    grid-template-columns: 0.35fr 1fr;
+  }
+  .quick-card,
+  .callout {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-5);
+  }
+  .quick-card img {
+    margin-bottom: var(--space-3);
+  }
+  .quick-card ul,
+  .callout ul,
+  .check-list {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+  .detail-copy h2,
+  .split-content h2 {
+    margin-top: var(--space-6);
+  }
+  .detail-copy h2:first-child,
+  .split-content h2:first-child {
+    margin-top: 0;
+  }
+  .compact-head {
+    margin-bottom: var(--space-5);
+    max-width: 760px;
+  }
+  .card-grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .card-grid--three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .card-grid--two {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .info-card,
+  .post-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    text-decoration: none;
+  }
+  .info-card {
+    padding: var(--space-5);
+  }
+  .info-card:hover,
+  .post-card:hover {
+    box-shadow: var(--shadow-md);
+    color: inherit;
+  }
+  .info-card h3,
+  .post-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: var(--space-2);
+  }
+  .info-card span {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-weight: 700;
+  }
+  .post-card {
+    overflow: hidden;
+  }
+  .post-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+  }
+  .post-card div {
+    padding: var(--space-4);
+  }
+  .split-content {
+    grid-template-columns: 1fr 0.7fr;
+  }
+  .medical-note {
+    font-size: 0.92rem;
+    margin-top: var(--space-5);
+  }
+  @media (max-width: 850px) {
+    .detail-hero__grid,
+    .detail-grid,
+    .split-content,
+    .card-grid--three,
+    .card-grid--two {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

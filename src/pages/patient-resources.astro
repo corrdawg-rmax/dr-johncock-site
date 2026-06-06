@@ -1,0 +1,147 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { blogCategories } from "../data/blog";
+import { config } from "../lib/config";
+
+const displayCity = config.practice.city || "[CITY]";
+const displayState = config.practice.state || "[STATE]";
+
+const resourceCards = [
+  { icon: "/icons/clipboard.svg", title: "New Patient Guide", href: "/new-patients/", body: "What to bring, how first visits work, and what the clinic may ask before scheduling." },
+  { icon: "/icons/bar-chart.svg", title: "Compare Care Options", href: "/compare/", body: "Side-by-side guidance for common treatment paths, next steps, and patient decisions." },
+  { icon: "/icons/google-docs.svg", title: "Blog Articles", href: "/blog/", body: "Condition and treatment articles written for patients, grouped by practical categories." },
+  { icon: "/icons/medical-card.svg", title: "Insurance & Payment", href: "/insurance/", body: "Coverage and payment details patients should confirm before booking." },
+  { icon: "/icons/question.svg", title: "Frequently Asked Questions", href: "/faq/", body: "Short answers to common scheduling, visit, and care questions." },
+  { icon: "/icons/download.svg", title: "Forms and Prep", href: "/appointment/", body: "A future home for intake forms, instructions, and appointment preparation." },
+];
+---
+
+<BaseLayout
+  title={`Patient Resources | ${displayCity}, ${displayState}`}
+  description={`Patient resources for podiatry care in ${displayCity}, ${displayState}, including visit prep, comparison guides, articles, and insurance notes.`}
+  canonicalPath="/patient-resources"
+>
+  <section class="inner-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">Patient Resources</p>
+      <h1>Helpful Next Steps Before and After Your Visit</h1>
+      <p class="lede">A practical hub for appointment prep, comparison guides, insurance questions, and foot care articles.</p>
+      <div class="button-row">
+        <CTAButton href="/compare" variant="primary">Compare Care Options</CTAButton>
+        <CTAButton href="/blog" variant="outline">Read Articles</CTAButton>
+      </div>
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Patient Resources" }]} />
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="resource-grid">
+        {resourceCards.map((item) => (
+          <a href={item.href} class="resource-card">
+            <img src={item.icon} alt="" width="34" height="34" />
+            <h2>{item.title}</h2>
+            <p>{item.body}</p>
+            <span>Open resource</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container">
+      <div class="compact-head">
+        <h2>Article Categories</h2>
+        <p>Blog content should support the patient journey without turning into a keyword list.</p>
+      </div>
+      <div class="category-grid">
+        {blogCategories.map((category) => (
+          <a href={`/blog?category=${category.slug}`} class="category-card">
+            <h3>{category.name}</h3>
+            <p>{category.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .inner-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+    text-align: center;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .lede,
+  .compact-head p,
+  .resource-card p,
+  .category-card p {
+    color: var(--brand-slate);
+  }
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-5);
+  }
+  .resource-grid,
+  .category-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .resource-card,
+  .category-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    padding: var(--space-5);
+    text-decoration: none;
+  }
+  .resource-card h2,
+  .category-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--space-2);
+  }
+  .resource-card img {
+    margin-bottom: var(--space-4);
+  }
+  .resource-card span {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .compact-head {
+    margin-bottom: var(--space-5);
+    max-width: 720px;
+  }
+  @media (max-width: 900px) {
+    .resource-grid,
+    .category-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 650px) {
+    .resource-grid,
+    .category-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

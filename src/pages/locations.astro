@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { config, fullAddress } from "../lib/config";
+
+const address = fullAddress();
+---
+
+<BaseLayout title={`Locations | ${config.practice.name}`} description="Clinic location and service area information." canonicalPath="/locations">
+  <section class="page-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">Locations</p>
+      <h1>Clinic Location and Service Area</h1>
+      <p class="lede">{address || "Clinic address details should be added in the config before final publication."}</p>
+      <CTAButton href="/contact" variant="primary">Contact the Clinic</CTAButton>
+    </div>
+  </section>
+  <Breadcrumbs items={[{ label: "Locations" }]} />
+  <section class="section section--tight">
+    <div class="container--narrow copy">
+      <h2>Service Area</h2>
+      <p>This page can list nearby communities, parking notes, directions, and local access details once the clinic confirms them.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero { background: var(--brand-light-bg); padding: var(--space-8) 0; text-align: center; }
+  .eyebrow { color: var(--brand-accent); font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: var(--space-3); text-transform: uppercase; }
+  .lede, .copy p { color: var(--brand-slate); }
+</style>

@@ -1,0 +1,229 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTAButton from "../../components/CTAButton.astro";
+import FormEmbed from "../../components/FormEmbed.astro";
+import { treatmentPages } from "../../data/clinical";
+import { config } from "../../lib/config";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": `${config.seo.site_url}/#clinic`,
+      "name": config.practice.name,
+      "url": config.seo.site_url,
+      "telephone": config.contact.phone,
+      "medicalSpecialty": "Podiatric",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": [config.contact.address_line_1, config.contact.address_line_2].filter(Boolean).join(", "),
+        "addressLocality": config.contact.city,
+        "addressRegion": config.contact.state,
+        "postalCode": config.contact.zip,
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": `${config.seo.site_url}/treatments/#webpage`,
+      "url": `${config.seo.site_url}/treatments/`,
+      "name": "Podiatry Treatments in Hickory NC",
+      "description": "A patient-facing library of podiatry treatment options at Carolina Podiatry Center.",
+      "about": { "@id": `${config.seo.site_url}/#clinic` },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": treatmentPages.map((page, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": page.h1,
+          "url": `${config.seo.site_url}/treatments/${page.slug}/`
+        }))
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Podiatry Treatments in Hickory NC | Carolina Podiatry Center"
+  description="Compare podiatry treatment options in Hickory, NC, including conservative foot care, orthotics, shockwave therapy questions, injections, nail procedures, diabetic foot care, wound care, sports foot care, and surgery consultations."
+  canonicalPath="/treatments/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="inner-hero">
+    <div class="container inner-hero__grid">
+      <div>
+        <p class="eyebrow">Treatment Options</p>
+        <h1>A Practical Treatment Ladder for Foot and Ankle Pain</h1>
+        <p class="lede">
+          Treatment should follow the diagnosis. Carolina Podiatry Center starts by identifying the painful structure, then discusses conservative care, support, in-office options, or surgery when the condition calls for it.
+        </p>
+        <div class="button-row">
+          <CTAButton href="#treatment-list" variant="primary">Browse Treatments</CTAButton>
+          <CTAButton href="#book" variant="outline">Request Appointment</CTAButton>
+        </div>
+      </div>
+      <img src="/images/treatment-room-interior.jpg" alt="Clean podiatry treatment room" loading="eager" />
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Treatments" }]} />
+
+  <section class="section section--tight" id="treatment-list">
+    <div class="container">
+      <div class="compact-head">
+        <h2>Podiatry Treatment Options</h2>
+        <p>These pages explain how common foot and ankle treatment paths work, who they may help, what to ask, and which condition pages connect to each option.</p>
+      </div>
+      <div class="overview-grid">
+        {treatmentPages.map((treatment) => (
+          <a href={`/treatments/${treatment.slug}/`} class="overview-card">
+            <img src={treatment.icon} alt="" width="34" height="34" />
+            <h3>{treatment.eyebrow}</h3>
+            <p>{treatment.overview}</p>
+            <span>Learn more</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container treatment-band">
+      <div>
+        <p class="eyebrow">How to Use This Section</p>
+        <h2>Start With the Problem, Then Compare the Treatment</h2>
+        <p>
+          A heel pain patient, a diabetic patient with a wound, and a patient with an ingrown toenail all need different next steps. Use the treatment pages to understand the care ladder, then use the condition pages or appointment form to move toward a diagnosis.
+        </p>
+      </div>
+      <div class="treatment-band__links">
+        <a href="/conditions/">Browse conditions</a>
+        <a href="/compare/">Compare options</a>
+        <a href="/appointment/">Request appointment</a>
+      </div>
+    </div>
+  </section>
+
+  <FormEmbed slug="appointment" title="Ask About Treatment Options" />
+</BaseLayout>
+
+<style>
+  .inner-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+  }
+  .inner-hero__grid {
+    align-items: center;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: 1fr 0.85fr;
+  }
+  .inner-hero img {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    width: 100%;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .lede {
+    color: var(--brand-slate);
+    font-size: 1.12rem;
+    max-width: 62ch;
+  }
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .compact-head {
+    margin-bottom: var(--space-5);
+    max-width: 760px;
+  }
+  .compact-head p,
+  .treatment-band p {
+    color: var(--brand-slate);
+  }
+  .overview-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .overview-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    padding: var(--space-5);
+    text-decoration: none;
+  }
+  .overview-card:hover {
+    box-shadow: var(--shadow-md);
+    color: inherit;
+  }
+  .overview-card img {
+    margin-bottom: var(--space-4);
+  }
+  .overview-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--space-2);
+  }
+  .overview-card p {
+    color: var(--brand-slate);
+    font-size: 0.95rem;
+  }
+  .overview-card span {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .treatment-band {
+    align-items: center;
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr 0.45fr;
+  }
+  .treatment-band__links {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .treatment-band__links a {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-sm);
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    padding: var(--space-4);
+    text-decoration: none;
+  }
+  @media (max-width: 950px) {
+    .inner-hero__grid,
+    .overview-grid,
+    .treatment-band {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 650px) {
+    .inner-hero__grid,
+    .overview-grid,
+    .treatment-band {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

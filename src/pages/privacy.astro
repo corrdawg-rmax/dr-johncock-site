@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { config } from "../lib/config";
+---
+
+<BaseLayout
+  title={`Privacy Policy | ${config.practice.name}`}
+  description={`Privacy policy for ${config.practice.name} in Hickory, NC.`}
+  canonicalPath="/privacy/"
+>
+  <section class="simple-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">Privacy Policy</p>
+      <h1>Privacy Policy</h1>
+      <p>This page explains how website inquiries and basic site information may be handled by {config.practice.name}.</p>
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
+
+  <section class="section section--tight">
+    <div class="container--narrow policy-copy">
+      <h2>Information You Submit</h2>
+      <p>
+        If you use a contact or appointment form, the information you enter may be sent to the practice or its scheduling system so the office can respond. Do not use the website form for emergencies.
+      </p>
+
+      <h2>Website Data</h2>
+      <p>
+        The site may use standard hosting, analytics, embedded maps, or form tools that collect basic technical information such as browser type, device type, referral source, and pages visited.
+      </p>
+
+      <h2>Medical Information</h2>
+      <p>
+        Website content is for education and does not create a provider-patient relationship. Call the office for specific medical guidance or scheduling questions.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        For questions about this website or how information is handled, call {config.practice.name} at <a href={`tel:${config.contact.phone_raw}`}>{config.contact.phone}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .simple-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+    text-align: center;
+  }
+  .simple-hero p,
+  .policy-copy p {
+    color: var(--brand-slate);
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .policy-copy h2 {
+    margin-top: var(--space-6);
+  }
+  .policy-copy h2:first-child {
+    margin-top: 0;
+  }
+</style>

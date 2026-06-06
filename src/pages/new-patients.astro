@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { config } from "../lib/config";
+
+const items = ["Insurance card and photo ID", "Current medication list", "Shoes you wear most often", "Any recent X-rays or records from another provider"];
+---
+
+<BaseLayout title={`New Patients | ${config.practice.name}`} description="New patient information for a first podiatry visit." canonicalPath="/new-patients">
+  <section class="page-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">New Patients</p>
+      <h1>Prepare for Your First Visit</h1>
+      <p class="lede">A simple checklist for patients before their first podiatry appointment.</p>
+    </div>
+  </section>
+  <Breadcrumbs items={[{ label: "New Patients" }]} />
+  <section class="section section--tight">
+    <div class="container--narrow copy">
+      <h2>What to Bring</h2>
+      <ul>{items.map((item) => <li>{item}</li>)}</ul>
+      <p>Final tenant versions can add intake forms, cancellation policy, parking notes, accessibility details, and payment instructions when confirmed.</p>
+      <CTAButton href="/#book" variant="primary">Request Consultation</CTAButton>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero { background: var(--brand-light-bg); padding: var(--space-8) 0; text-align: center; }
+  .eyebrow { color: var(--brand-accent); font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: var(--space-3); text-transform: uppercase; }
+  .lede, .copy p, .copy li { color: var(--brand-slate); }
+</style>

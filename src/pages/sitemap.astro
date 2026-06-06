@@ -1,0 +1,141 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { blogCategories, blogPosts } from "../data/blog";
+import { conditionPages, treatmentPages } from "../data/clinical";
+import { config } from "../lib/config";
+
+const mainPages = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about/" },
+  { label: "Patient Resources", href: "/patient-resources/" },
+  { label: "Compare Options", href: "/compare/" },
+  { label: "Contact", href: "/contact/" },
+  { label: "Request Appointment", href: "/appointment/" },
+  { label: "New Patients", href: "/new-patients/" },
+  { label: "Insurance", href: "/insurance/" },
+  { label: "Locations", href: "/locations/" },
+  { label: "FAQ", href: "/faq/" },
+];
+---
+
+<BaseLayout
+  title={`Sitemap | ${config.practice.name}`}
+  description={`Sitemap for ${config.practice.name}, including condition pages, treatment pages, blog articles, and patient resources.`}
+  canonicalPath="/sitemap/"
+>
+  <section class="simple-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">Sitemap</p>
+      <h1>Website Sitemap</h1>
+      <p>Quick links to the main pages, condition pages, treatment pages, and patient guides.</p>
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Sitemap" }]} />
+
+  <section class="section section--tight">
+    <div class="container sitemap-grid">
+      <div class="sitemap-card">
+        <h2>Main Pages</h2>
+        <ul>
+          {mainPages.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </div>
+      <div class="sitemap-card">
+        <h2>Conditions</h2>
+        <ul>
+          {conditionPages.map((item) => <li><a href={`/conditions/${item.slug}/`}>{item.eyebrow}</a></li>)}
+        </ul>
+      </div>
+      <div class="sitemap-card">
+        <h2>Treatments</h2>
+        <ul>
+          {treatmentPages.map((item) => <li><a href={`/treatments/${item.slug}/`}>{item.eyebrow}</a></li>)}
+        </ul>
+      </div>
+      <div class="sitemap-card sitemap-card--wide">
+        <h2>Blog</h2>
+        <div class="blog-columns">
+          {blogCategories.map((category) => (
+            <div>
+              <h3>{category.name}</h3>
+              <ul>
+                {blogPosts.filter((post) => post.category === category.slug).map((post) => (
+                  <li><a href={post.href}>{post.title}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .simple-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+    text-align: center;
+  }
+  .simple-hero p {
+    color: var(--brand-slate);
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .sitemap-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .sitemap-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-5);
+  }
+  .sitemap-card--wide {
+    grid-column: 1 / -1;
+  }
+  .sitemap-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: var(--space-3);
+  }
+  .sitemap-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: var(--space-2);
+  }
+  .sitemap-card ul {
+    display: grid;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .blog-columns {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(5, 1fr);
+  }
+  @media (max-width: 1050px) {
+    .sitemap-grid,
+    .blog-columns {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 650px) {
+    .sitemap-grid,
+    .blog-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

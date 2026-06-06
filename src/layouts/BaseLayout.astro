@@ -1,0 +1,74 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { config } from "../lib/config";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalPath?: string;
+}
+
+const {
+  title = config.seo.default_title,
+  description = config.seo.default_description,
+  ogImage = config.branding.logo_path,
+  canonicalPath = "",
+} = Astro.props;
+
+const canonicalUrl = canonicalPath
+  ? `${config.seo.site_url}${canonicalPath}`
+  : config.seo.site_url;
+
+const b = config.branding;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {/* Favicons */}
+    <link rel="icon" type="image/x-icon" href={b.favicon_path} />
+    <link rel="icon" type="image/svg+xml" href={b.favicon_svg_path} />
+    <link rel="icon" type="image/png" sizes="96x96" href={b.favicon_png_96_path} />
+    <link rel="apple-touch-icon" sizes="180x180" href={b.apple_touch_icon_path} />
+    <link rel="manifest" href={b.webmanifest_path} />
+    <meta name="theme-color" content={b.primary_color} />
+
+    {/* Open Graph */}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+
+    {/* Inline CSS variable overrides from config , lets tenants change brand colors without rebuilding CSS */}
+    <style set:html={`
+      :root {
+        --brand-primary: ${b.primary_color};
+        --brand-secondary: ${b.secondary_color};
+        --brand-accent: ${b.accent_color};
+        --brand-slate: ${b.supporting_slate};
+        --brand-dark-text: ${b.dark_text};
+        --brand-light-bg: ${b.light_bg};
+      }
+    `} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

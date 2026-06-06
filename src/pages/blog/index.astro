@@ -1,0 +1,211 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTAButton from "../../components/CTAButton.astro";
+import { blogCategories, blogPosts, getCategory } from "../../data/blog";
+import { config } from "../../lib/config";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": `${config.seo.site_url}/#clinic`,
+      "name": config.practice.name,
+      "url": config.seo.site_url,
+      "telephone": config.contact.phone,
+      "medicalSpecialty": "Podiatric",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": [config.contact.address_line_1, config.contact.address_line_2].filter(Boolean).join(", "),
+        "addressLocality": config.contact.city,
+        "addressRegion": config.contact.state,
+        "postalCode": config.contact.zip,
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "Blog",
+      "@id": `${config.seo.site_url}/blog/#blog`,
+      "url": `${config.seo.site_url}/blog/`,
+      "name": "Carolina Podiatry Center Foot Care Blog",
+      "description": "Foot care articles for Hickory patients about heel pain, treatments, sports injuries, diabetic foot care, and nail or skin concerns.",
+      "publisher": { "@id": `${config.seo.site_url}/#clinic` }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Foot Care Blog in Hickory NC | Carolina Podiatry Center"
+  description="Read Carolina Podiatry Center foot care guides for Hickory patients, including heel pain, plantar fasciitis, sports injuries, diabetic foot care, toenail problems, orthotics, and treatment options."
+  canonicalPath="/blog/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="blog-hero">
+    <div class="container blog-hero__inner">
+      <p class="eyebrow">Patient Resources</p>
+      <h1>Foot Care Articles for Hickory Patients</h1>
+      <p>
+        Practical guides from Carolina Podiatry Center for people trying to understand heel pain, nail problems, sports injuries, diabetic foot risk, and treatment options before they call.
+      </p>
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Blog" }]} />
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="section-head">
+        <h2>Browse by Topic</h2>
+        <p>Each category groups related symptoms, treatment questions, and local foot care searches so patients can move from a broad question to the right condition or treatment page.</p>
+      </div>
+      <div class="category-grid">
+        {blogCategories.map((category) => (
+          <a href={`/blog/?category=${category.slug}`} class="category-card">
+            <h3>{category.name}</h3>
+            <p>{category.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container">
+      <div class="section-head">
+        <h2>Patient Guides</h2>
+        <p>Articles link back to the most relevant condition and treatment pages so the blog supports the full site instead of becoming a dead end.</p>
+      </div>
+      <div class="post-grid">
+        {blogPosts.map((post) => (
+          <a href={post.href} class="post-card">
+            <img src={post.image} alt={post.imageAlt} loading="lazy" />
+            <div class="post-card__body">
+              <span>{getCategory(post.category)?.name}</span>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="blog-cta">
+        <CTAButton href="/conditions/" variant="outline">Browse Conditions</CTAButton>
+        <CTAButton href="/treatments/" variant="primary">Browse Treatments</CTAButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+    text-align: center;
+  }
+  .blog-hero__inner {
+    max-width: 820px;
+  }
+  .blog-hero h1 {
+    margin-bottom: var(--space-4);
+  }
+  .blog-hero p {
+    color: var(--brand-slate);
+    font-size: 1.12rem;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .section-head {
+    margin-bottom: var(--space-5);
+    max-width: 760px;
+  }
+  .section-head p {
+    color: var(--brand-slate);
+  }
+  .category-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .category-card,
+  .post-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    text-decoration: none;
+  }
+  .category-card {
+    padding: var(--space-5);
+  }
+  .category-card:hover,
+  .post-card:hover {
+    box-shadow: var(--shadow-md);
+    color: inherit;
+  }
+  .category-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: var(--space-2);
+  }
+  .category-card p,
+  .post-card p {
+    color: var(--brand-slate);
+  }
+  .post-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .post-card {
+    overflow: hidden;
+  }
+  .post-card img {
+    aspect-ratio: 16 / 8.5;
+    object-fit: cover;
+    width: 100%;
+  }
+  .post-card__body {
+    padding: var(--space-5);
+  }
+  .post-card__body span {
+    color: var(--brand-secondary);
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+  }
+  .post-card__body h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-2);
+  }
+  .blog-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-7);
+  }
+  @media (max-width: 1050px) {
+    .category-grid,
+    .post-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 650px) {
+    .category-grid,
+    .post-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,1479 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FAQAccordion from "../components/FAQAccordion.astro";
+import FormEmbed from "../components/FormEmbed.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { config, telLink, getClientImage } from "../lib/config";
+import { blogPosts as latestBlogPosts, getCategory } from "../data/blog";
+
+const city = config.practice.city;
+const state = config.practice.state;
+const displayCity = city || "Hickory";
+const displayState = state || "NC";
+const heroImage = getClientImage("homepage_hero") || { file_path: "/images/podiatrist-foot-exam-clinic.jpg", alt_text: "" };
+const doctorImage = getClientImage("doctor_profile") || { file_path: "/images/doctor-patient-consultation.png", alt_text: "Podiatrist gently examining a patient's foot during a consultation" };
+const clinicImage = getClientImage("clinic_gallery", "clinic_interior") || { file_path: "/images/treatment-room-interior.jpg", alt_text: "Clean podiatry treatment room" };
+const exteriorImage = getClientImage("contact_page", "clinic_exterior") || getClientImage("clinic_gallery", "clinic_exterior") || { file_path: "/images/podiatrist-loupe-exam.jpg", alt_text: "Podiatrist examining a foot in a clinical setting" };
+const sportsImage = getClientImage("sports_medicine_section", "patient_lifestyle") || { file_path: "/client-images/dr-johncock-race-community.webp", alt_text: "Runner pushing a racing chair during a road race" };
+const doctorName = config.doctor?.name ? `Dr. ${config.doctor.name}` : config.practice.name;
+const doctorCredentials = config.doctor?.credentials || "";
+const doctorTitle = config.doctor?.title || "Podiatrist";
+const doctorSpecialties = "Heel pain, sports foot care, diabetic foot care, nail care";
+const appointmentLabel = config.appointments?.booking_cta_label || "Request Appointment";
+
+const valueProps = [
+  { icon: "/icons/heel-glow.svg", title: "Heel and Arch Pain", body: "Heel pain with first steps, standing, or exercise can happen with plantar fasciitis, heel spurs, tendon irritation, or overuse. A podiatrist can examine the foot and explain treatment options." },
+  { icon: "/icons/running.svg", title: "Care for Active Feet", body: "Runners, walkers, workers who stand most of the day, and people returning to exercise often need help when foot or ankle pain keeps coming back." },
+  { icon: "/icons/nail.svg", title: "Nail and Skin Problems", body: "Ingrown toenails, thick nails, corns, calluses, plantar warts, and shoe pressure around the toes can make normal walking painful." },
+  { icon: "/icons/diabetic-foot.svg", title: "Diabetic Foot Concerns", body: "Diabetic foot checks, wounds, ulcers, circulation concerns, and pressure areas deserve careful attention from a foot and ankle doctor." },
+  { icon: "/icons/balance.svg", title: "Conservative Steps First", body: "Many visits start with footwear advice, stretching, padding, bracing, activity changes, or supportive inserts before advanced care is discussed." },
+  { icon: "/icons/scalpel.svg", title: "Surgical Foot Care", body: "When conservative care is not enough, Dr. Johncock can discuss whether surgical consultation fits the diagnosis, goals, and risks." },
+];
+
+const conditions = [
+  { icon: "/icons/heel-glow.svg", name: "Plantar Fasciitis", href: "/conditions/plantar-fasciitis", note: "Heel and arch pain with first steps" },
+  { icon: "/icons/bunion.svg", name: "Bunions", href: "/conditions/bunions", note: "Big toe pressure and shoe irritation" },
+  { icon: "/icons/heel-highlighted.svg", name: "Heel Pain & Spurs", href: "/conditions/heel-pain", note: "Heel soreness with standing or walking" },
+  { icon: "/icons/feet.svg", name: "Hammertoes", href: "/conditions/hammertoes", note: "Bent toes, corns, and shoe rubbing" },
+  { icon: "/icons/nail.svg", name: "Ingrown Toenails", href: "/conditions/ingrown-toenails", note: "Painful nail edges, redness, or swelling" },
+  { icon: "/icons/diabetic-foot.svg", name: "Diabetic Foot Care", href: "/conditions/diabetic-foot-care", note: "Foot checks, wounds, and pressure spots" },
+  { icon: "/icons/running.svg", name: "Sports Injuries", href: "/conditions/sports-injuries", note: "Running pain, sprains, and tendon strain" },
+  { icon: "/icons/sprained.svg", name: "Sprained Ankles", href: "/conditions/ankle-pain/", note: "Swelling, instability, or repeat pain" },
+];
+
+const treatments = [
+  { icon: "/icons/heel-glow.svg", name: "Heel Pain Treatment", href: "/conditions/heel-pain", body: "A foot doctor evaluates heel and arch pain, then explains care options based on the exam and what has already been tried.", price: "Heel and arch pain", featured: true },
+  { icon: "/icons/insole.svg", name: "Custom Orthotics", href: "/treatments/orthotics", body: "Custom orthotics may help when pressure, arch support, foot alignment, or overuse contributes to pain.", price: "Arch support" },
+  { icon: "/icons/running.svg", name: "Sports Foot Care", href: "/conditions/sports-injuries", body: "Sports foot care can help with running pain, tendon irritation, sprains, and recurring pain during activity.", price: "Active feet" },
+  { icon: "/icons/nail.svg", name: "Ingrown Toenail and Nail Care", href: "/conditions/ingrown-toenails", body: "A podiatrist can evaluate painful nail edges, thick nails, nail infection concerns, and shoe pressure around the toes.", price: "Nail pain" },
+  { icon: "/icons/band-aid.svg", name: "Diabetic and Wound Care", href: "/conditions/diabetic-foot-care", body: "Diabetic foot visits may include foot checks, pressure-area review, wound care questions, and prevention guidance.", price: "High-risk feet" },
+  { icon: "/icons/scalpel.svg", name: "Foot Surgery Consultation", href: "/treatments/surgery", body: "Surgical consultation may be appropriate when conservative care does not solve a foot or ankle problem.", price: "When needed" },
+];
+
+const resources = [
+  { icon: "/icons/clipboard.svg", title: "New Patient Guide", body: "What to bring, how to prepare, and which questions to ask before your first podiatry visit.", href: "/new-patients", color: "primary", action: "Prepare for your first visit" },
+  { icon: "/icons/bar-chart.svg", title: "Compare Care Options", body: "Plain-language guidance on conservative care, orthotics, procedures, and surgery conversations.", href: "/compare", color: "secondary", action: "Compare treatment paths" },
+  { icon: "/icons/medical-card.svg", title: "Insurance & Payment", body: "Call the clinic to verify coverage for your specific plan before booking.", href: "/insurance", color: "secondary", action: "Review payment questions" },
+  { icon: "/icons/book.svg", title: "Resources Hub", body: "Practical guides for appointment prep, home care, procedures, and follow-up questions.", href: "/patient-resources", color: "accent", action: "Browse patient resources" },
+  { icon: "/icons/question.svg", title: "FAQ", body: "Short answers about conditions, appointments, insurance questions, and first visits.", href: "/faq", color: "slate", action: "Read common questions" },
+  { icon: "/icons/google-docs.svg", title: "Blog Articles", body: "Patient-friendly articles about common foot pain questions and treatment decisions.", href: "/blog", color: "primary", action: "Browse foot care articles" },
+];
+
+const blogPosts = latestBlogPosts.slice(0, 3);
+
+const stats = [
+  { number: "Hickory, NC", label: "Foot and ankle clinic" },
+  { number: "(828) 327-3029", label: "Call the office" },
+  { number: "36 14th Ave NE", label: "Suite 102" },
+  { number: "Coverage", label: "Verify by phone" },
+];
+
+const homeFaqs = [
+  { question: "Do I need a referral to see a foot doctor?", answer: "Some insurance plans require a referral, and others do not. Call the office or your insurance plan before booking so you know what your plan requires." },
+  { question: "What does a podiatrist treat?", answer: "A podiatrist treats foot and ankle problems such as heel pain, plantar fasciitis, bunions, hammertoes, ingrown toenails, fungal nail concerns, sports injuries, wounds, and diabetic foot concerns." },
+  { question: "When should I see a foot doctor for heel pain?", answer: "Consider calling a foot doctor when heel pain lasts more than a few days, keeps returning, is worse in the morning, or changes how you walk. A podiatrist can examine the foot and explain likely next steps." },
+  { question: "Does insurance cover podiatry visits?", answer: "Coverage depends on your plan, diagnosis, and visit type. Call Carolina Podiatry Center before booking to verify coverage for your specific insurance plan." },
+  { question: "What happens at the first visit?", answer: "The doctor reviews your symptoms, medical history, shoes, activity level, and any treatments you have already tried. The visit may include a foot or ankle exam and a discussion of conservative care, imaging, procedures, or follow-up when appropriate." },
+  { question: "Where is Carolina Podiatry Center located?", answer: "Carolina Podiatry Center is located at 36 14th Avenue NE, Suite 102, Hickory, NC 28601. Call the office if you need directions or current appointment availability." },
+];
+---
+
+<BaseLayout
+  title={`${displayCity}, ${displayState} Podiatrist | ${doctorName}, ${doctorCredentials}`}
+  description={`Need a foot doctor in Hickory, NC? Carolina Podiatry Center provides podiatry care for heel pain, sports injuries, nail problems, diabetic foot concerns, wounds, and foot surgery questions.`}
+  canonicalPath="/"
+>
+  {/* ───────── 1. HERO ───────── */}
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <img src={heroImage.file_path} alt="" />
+      <div class="hero__overlay"></div>
+    </div>
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          {config.practice.tagline}
+        </div>
+        <h1>
+          {displayCity}, {displayState} Podiatrist - <span class="hero__hl">{doctorName}, {doctorCredentials}</span>
+        </h1>
+        <p class="hero__sub">
+          Foot and ankle care at Carolina Podiatry Center for heel pain, plantar fasciitis, bunions, ingrown toenails, diabetic foot concerns, sports injuries, wounds, and other common podiatry problems.
+        </p>
+        <div class="hero__ctas">
+          <CTAButton href={telLink()} variant="accent" size="large">
+            <span class="cta__icon"><img src="/icons/telephone.svg" alt="" width="18" height="18" /></span>
+            {config.contact.phone}
+          </CTAButton>
+          <CTAButton href="#book" variant="outline" size="large">
+            <span class="cta__icon"><img src="/icons/mail.svg" alt="" width="18" height="18" /></span>
+            {appointmentLabel}
+          </CTAButton>
+        </div>
+        <div class="hero__signals">
+          <div class="hero__signal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2.2" aria-hidden="true">
+              <path d="M12 21s7-6.2 7-12A7 7 0 105 9c0 5.8 7 12 7 12z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            <span><strong>36 14th Ave NE</strong> Suite 102</span>
+          </div>
+          <div class="hero__signal-divider"></div>
+          <div class="hero__signal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2.2" aria-hidden="true">
+              <path d="M12 2 L4 6 V12 C4 17 7.5 21 12 22 C16.5 21 20 17 20 12 V6 Z"/>
+              <polyline points="9 12 11 14 15 10"/>
+            </svg>
+            <span>{doctorName}{doctorCredentials && `, ${doctorCredentials}`}</span>
+          </div>
+          <div class="hero__signal-divider"></div>
+          <div class="hero__signal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2.2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Call to verify coverage and availability</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <svg class="hero__swoosh" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,120 C240,60 480,20 720,40 C960,60 1200,100 1440,80 L1440,120 Z" fill="#FFFFFF" opacity="0.95"/>
+      <path d="M0,120 C240,80 480,40 720,60 C960,80 1200,110 1440,100 L1440,120 Z" fill="#FFFFFF"/>
+    </svg>
+  </section>
+
+  {/* ───────── 2. TRUST STRIP ───────── */}
+  <section class="trust-strip">
+    <div class="container trust-strip__inner">
+      {stats.map((s) => (
+        <div class="trust-strip__item">
+          <strong>{s.number}</strong>
+          <span>{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {/* ───────── 3. OUR APPROACH ───────── */}
+  <section class="section section--approach">
+    <div class="container approach">
+      <div class="approach__media">
+        <div class="approach__image-frame">
+          <img src={doctorImage.file_path} alt={doctorImage.alt_text} loading="lazy" />
+        </div>
+        <div class="approach__badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2 L4 6 V12 C4 17 7.5 21 12 22 C16.5 21 20 17 20 12 V6 Z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+          <div>
+            <strong>{doctorName}{doctorCredentials && `, ${doctorCredentials}`}</strong>
+            <span>{doctorTitle}</span>
+            <small>{doctorSpecialties}</small>
+          </div>
+        </div>
+      </div>
+      <div class="approach__copy">
+        <p class="section-head__eyebrow">Our Approach</p>
+        <h2>Start With the Cause of the Foot Pain</h2>
+        <p>
+          Foot pain often builds from more than one thing: shoes, standing work, training habits, walking mechanics, diabetes, circulation, old injuries, or pressure that keeps returning to the same spot. A podiatry visit starts by sorting out what is likely driving the problem.
+        </p>
+        <p>
+          Dr. Johncock's care can include conservative steps such as footwear guidance, stretching, padding, bracing, orthotics, activity changes, and follow-up. If symptoms continue or the exam points to a more serious problem, the visit can include a discussion of imaging, procedures, wound care, or surgical consultation.
+        </p>
+        <p>
+          The goal is to explain the foot or ankle problem in plain language and help patients understand the next step before they leave the office.
+        </p>
+        <CTAButton href="/doctor" variant="primary">Meet Dr. Johncock</CTAButton>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 3. WHY CHOOSE US ───────── */}
+  <section class="section section--why">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-head__eyebrow">Local Foot Care</p>
+        <h2>A Hickory Foot Doctor for Everyday Pain, Sports Injuries, and Diabetic Feet</h2>
+        <p class="section-head__sub">
+          Most patients do not start by searching for a treatment. They start because the heel hurts, a toenail is painful, an ankle keeps swelling, or diabetes makes foot care more important.
+        </p>
+      </div>
+      <div class="props-grid">
+        {valueProps.map((p, i) => (
+          <div class={`prop-card prop-card--${i % 3}`}>
+            <div class="prop-card__iconwrap">
+              <img src={p.icon} alt="" width="32" height="32" />
+            </div>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 5. CLINIC GLIMPSE ───────── */}
+  <section class="section section--clinic-glimpse">
+    <div class="container clinic-glimpse">
+      <div class="clinic-glimpse__copy">
+        <p class="section-head__eyebrow">Inside the Hickory Office</p>
+        <h2>Local Podiatry Care in Hickory</h2>
+        <p>Carolina Podiatry Center gives patients a local place to ask about heel pain, sports injuries, painful toenails, diabetic foot concerns, wounds, and follow-up foot care. Call the office if you need directions to the Hickory location or want to ask about appointment options.</p>
+      </div>
+      <div class="clinic-glimpse__images">
+        <img src={clinicImage.file_path} alt={clinicImage.alt_text} loading="lazy" />
+        <img src={exteriorImage.file_path} alt={exteriorImage.alt_text} loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 6. CONDITIONS ───────── */}
+  <section class="section section--conditions">
+    <div class="conditions__pattern" aria-hidden="true"></div>
+    <div class="container">
+      <div class="section-head">
+        <p class="section-head__eyebrow">Conditions We Treat</p>
+        <h2>Common Foot and Ankle Problems Treated in Hickory</h2>
+        <p class="section-head__sub">
+          Start with the problem you feel: morning heel pain, toe pressure, painful nails, ankle swelling, wounds, or foot pain during work and exercise. A podiatrist can examine the foot and explain what may be causing it.
+        </p>
+      </div>
+      <div class="tile-grid">
+        {conditions.map((c) => (
+          <a href={c.href} class="condition-tile">
+            <div class="condition-tile__icon">
+              <img src={c.icon} alt="" width="36" height="36" />
+            </div>
+            <h3>{c.name}</h3>
+            <p>{c.note}</p>
+            <span class="condition-tile__arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+      <div class="section-cta">
+        <CTAButton href="/conditions" variant="outline">See All Conditions We Treat</CTAButton>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 7. TREATMENTS ───────── */}
+  <section class="section section--treatments">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-head__eyebrow">Treatments We Offer</p>
+        <h2>Treatment Options After a Foot and Ankle Exam</h2>
+        <p class="section-head__sub">
+          Treatment depends on the diagnosis, symptoms, activity level, medical history, and what has already been tried. The right plan may include home care, shoe changes, orthotics, wound care, a procedure, or a surgical consultation.
+        </p>
+      </div>
+      <div class="treatments-grid">
+        {treatments.map((t) => (
+          <a href={t.href} class={`treatment-card ${t.featured ? "treatment-card--featured" : ""}`}>
+            {t.featured && <span class="treatment-card__badge">Common Concern</span>}
+            <div class="treatment-card__icon">
+              <img src={t.icon} alt="" width="36" height="36" />
+            </div>
+            <h3>{t.name}</h3>
+            <p>{t.body}</p>
+            <div class="treatment-card__foot">
+              <span class="treatment-card__price">{t.price}</span>
+              <span class="treatment-card__link">View {t.name}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="section-cta">
+        <CTAButton href="/treatments" variant="primary">Browse All Treatments</CTAButton>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 8. MID-PAGE CTA ───────── */}
+  <section class="mid-cta">
+    <div class="mid-cta__shapes" aria-hidden="true">
+      <div class="mid-cta__circle mid-cta__circle--1"></div>
+      <div class="mid-cta__circle mid-cta__circle--2"></div>
+    </div>
+    <div class="container mid-cta__inner">
+      <div class="mid-cta__copy">
+        <p class="mid-cta__eyebrow">Need a Foot Doctor in Hickory?</p>
+        <h2>Ask About Appointment Options</h2>
+        <p>If heel pain, nail pain, ankle pain, or a diabetic foot concern is affecting your day, call the office and ask about current appointment availability.</p>
+      </div>
+      <div class="mid-cta__actions">
+        <CTAButton href={telLink()} variant="accent" size="large">
+          <span class="cta__icon"><img src="/icons/telephone.svg" alt="" width="18" height="18" /></span>
+          {config.contact.phone}
+        </CTAButton>
+        <CTAButton href="#book" variant="outline" size="large">
+          <span class="cta__icon"><img src="/icons/mail.svg" alt="" width="18" height="18" /></span>
+          {appointmentLabel}
+        </CTAButton>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 9. PATIENT EXPERIENCE ───────── */}
+  <section class="section section--experience">
+    <div class="container experience">
+      <div class="experience__copy">
+        <p class="section-head__eyebrow">The Patient Experience</p>
+        <h2>What Happens Before and During a Visit</h2>
+        <p>
+          The first step is practical. Call the office or use the form to describe what is bothering you, ask about appointment options, and verify insurance or payment details before booking.
+        </p>
+        <p>
+          During a podiatry visit, Dr. Johncock reviews the problem, examines the foot or ankle, asks what has already been tried, and explains the likely next step. That may include conservative care, imaging, wound care, a procedure discussion, or follow-up when appropriate.
+        </p>
+        <ul class="experience__list">
+          <li>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Bring the shoes you wear most often</span>
+          </li>
+          <li>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Bring insurance details and current medications</span>
+          </li>
+          <li>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Explain when pain started and what makes it worse</span>
+          </li>
+          <li>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Ask the office to verify coverage before booking</span>
+          </li>
+        </ul>
+      </div>
+      <div class="experience__media">
+        <img src="/images/welcoming-clinic-entrance.png" alt="Welcoming entrance to our podiatry clinic" loading="lazy" class="experience__img experience__img--tall" />
+        <img src="/images/foot-massage-warm-hands.jpg" alt="Hands gently cradling a patient's foot during examination" loading="lazy" class="experience__img experience__img--top" />
+        <div class="experience__stat-card">
+          <div class="experience__stat-number">1<span>plan</span></div>
+          <p>A clear next step for your foot or ankle concern</p>
+          <svg class="experience__stat-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 10. AREAS WE SERVICE ───────── */}
+  <section class="section section--areas">
+    <div class="container areas">
+      <div class="areas__copy">
+        <p class="section-head__eyebrow">Greater {displayCity} Service Area</p>
+        <h2>Foot and Ankle Care for Hickory and Nearby Communities</h2>
+        <p>
+          Carolina Podiatry Center serves patients in Hickory and nearby Catawba Valley communities, including Newton, Conover, Lenoir, Morganton, and Taylorsville. Foot pain often shows up in active adults, workers who stand most of the day, older adults managing diabetes, and patients returning to walking or exercise.
+        </p>
+        <div class="area-chips">
+          <span class="area-chip area-chip--primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7 12 7.34 12.29.18.17.46.17.66.01.34-.27 7.34-7.04 7.34-12.3 0-4.42-3.58-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/>
+            </svg>
+            {displayCity}
+          </span>
+          {config.nearby_areas.map((area) => (
+            <span class="area-chip">{area}</span>
+          ))}
+        </div>
+        <CTAButton href="/locations" variant="primary">See All Locations Served</CTAButton>
+      </div>
+      <div class="areas__media">
+        <div class="areas__image-frame">
+          <img src={sportsImage.file_path} alt={sportsImage.alt_text} loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 11. PATIENT RESOURCES ───────── */}
+  <section class="section section--resources">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-head__eyebrow">Patient Resources</p>
+        <h2>Patient Resources Before and After a Foot Visit</h2>
+      </div>
+      <div class="resources-grid">
+        {resources.map((r) => (
+          <a href={r.href} class={`resource-card resource-card--${r.color}`}>
+            <div class="resource-card__icon">
+              <img src={r.icon} alt="" width="28" height="28" />
+            </div>
+            <h3>{r.title}</h3>
+            <p>{r.body}</p>
+            <span class="resource-card__more">{r.action}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 12. BLOG ───────── */}
+  <section class="section section--blog">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-head__eyebrow">Foot Care Articles</p>
+        <h2>Foot Care Articles for Hickory Patients</h2>
+        <p class="section-head__sub">
+          Read practical articles about heel pain, plantar fasciitis, sports injuries, nail problems, diabetic foot care, and when it makes sense to call a podiatrist.
+        </p>
+      </div>
+      <div class="blog-grid">
+        {blogPosts.map((post) => (
+          <a href={post.href} class="blog-card">
+            <div class="blog-card__image">
+              <img src={post.image} alt={post.title} loading="lazy" />
+              <span class="blog-card__tag">{getCategory(post.category)?.name}</span>
+            </div>
+            <div class="blog-card__body">
+              <span class="blog-card__meta">{getCategory(post.category)?.name}</span>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+              <span class="blog-card__more">Read {post.title}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="section-cta">
+        <CTAButton href="/blog" variant="outline">Read More Foot Care Articles</CTAButton>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── 13. FAQ ───────── */}
+  <FAQAccordion title="Frequently Asked Questions" items={homeFaqs} />
+
+  {/* ───────── 14. SEO CONTENT BLOCK ───────── */}
+  <section class="section seo-content">
+    <div class="container--narrow">
+      <h2>About Carolina Podiatry Center in Hickory, NC</h2>
+      <p>
+        Carolina Podiatry Center is a foot and ankle clinic at 36 14th Avenue NE, Suite 102, in Hickory, North Carolina. The practice is led by Dr. William J. Johncock, DPM, a podiatrist who provides conservative and surgical foot care.
+      </p>
+      <p>
+        Patients call for heel pain treatment, plantar fasciitis treatment, bunion care, hammertoe concerns, ingrown toenail treatment, fungal nail concerns, diabetic foot care, wound care, ankle pain, sports injuries, custom orthotics, and foot surgery questions.
+      </p>
+      <p>
+        If foot pain is changing how you walk, work, exercise, or choose shoes, a local foot doctor can examine the problem and explain the next step. Call Carolina Podiatry Center to ask about appointment options and insurance verification.
+      </p>
+    </div>
+  </section>
+
+  {/* ───────── 15. FORM CTA ───────── */}
+  <section class="form-cta" id="book">
+    <div class="form-cta__bg" aria-hidden="true"></div>
+    <div class="form-cta__pattern" aria-hidden="true"></div>
+    <div class="container form-cta__inner">
+      <div class="form-cta__copy">
+        <p class="form-cta__eyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Take the Next Step
+        </p>
+        <h2>Request a Foot and Ankle Appointment</h2>
+        <p class="form-cta__lede">
+          Tell us what is bothering you, and the clinic can follow up about appointment options, insurance questions, and the next best step.
+        </p>
+        <ul class="form-cta__list">
+          <li>
+            <span class="form-cta__check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            Tell the clinic what hurts and when it started
+          </li>
+          <li>
+            <span class="form-cta__check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            Ask about appointment availability
+          </li>
+          <li>
+            <span class="form-cta__check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            Verify insurance and payment details by phone
+          </li>
+          <li>
+            <span class="form-cta__check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            Find the right next step for your visit
+          </li>
+        </ul>
+        <div class="form-cta__phone">
+          <span class="form-cta__phone-label">Or call us directly:</span>
+          <a href={telLink()} class="form-cta__phone-number">
+            <img src="/icons/telephone.svg" alt="" width="20" height="20" />
+            {config.contact.phone}
+          </a>
+        </div>
+      </div>
+      <div class="form-cta__form-wrap">
+        <div class="form-cta__form-header">
+          <h3>Request an Appointment</h3>
+          <p>Share the foot or ankle problem you want help with.</p>
+        </div>
+        <FormEmbed slug="appointment" title="" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============ Shared section heading ============ */
+  .section-head {
+    max-width: 720px;
+    margin: 0 auto var(--space-7);
+    text-align: center;
+  }
+  .section-head__eyebrow {
+    display: inline-block;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--brand-accent);
+    margin-bottom: var(--space-3);
+    padding: 4px var(--space-3);
+    background: rgba(232, 163, 61, 0.12);
+    border-radius: var(--radius-full);
+  }
+  .section-head h2 { margin-bottom: var(--space-4); }
+  .section-head__sub { color: var(--brand-slate); font-size: 1.05rem; margin: 0; }
+  .section-cta { margin-top: var(--space-7); display: flex; justify-content: center; }
+
+  /* ============ 5. Clinic glimpse ============ */
+  .section--clinic-glimpse {
+    background: var(--brand-white);
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-7);
+  }
+  .clinic-glimpse {
+    align-items: center;
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 0.8fr 1fr;
+  }
+  .clinic-glimpse__copy h2 {
+    font-size: 2rem;
+    margin-bottom: var(--space-3);
+  }
+  .clinic-glimpse__copy p:last-child {
+    color: var(--brand-slate);
+  }
+  .clinic-glimpse__images {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr 1fr;
+  }
+  .clinic-glimpse__images img {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    object-fit: cover;
+    width: 100%;
+  }
+  @media (max-width: 850px) {
+    .clinic-glimpse,
+    .clinic-glimpse__images { grid-template-columns: 1fr; }
+  }
+
+  /* ============ 1. HERO ============ */
+  .hero {
+    position: relative;
+    min-height: 640px;
+    padding: var(--space-12) 0 var(--space-12);
+    color: var(--brand-white);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .hero__bg { position: absolute; inset: 0; z-index: 0; }
+  .hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center right;
+  }
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(95deg, rgba(15, 30, 55, 0.94) 0%, rgba(31, 78, 121, 0.82) 40%, rgba(31, 78, 121, 0.55) 70%, rgba(31, 78, 121, 0.35) 100%);
+  }
+  .hero__inner { position: relative; z-index: 2; width: 100%; }
+  .hero__content { max-width: 720px; }
+
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: rgba(232, 163, 61, 0.18);
+    border: 1px solid rgba(232, 163, 61, 0.5);
+    color: var(--brand-accent);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: var(--space-5);
+    backdrop-filter: blur(8px);
+  }
+  .hero__badge-dot {
+    width: 8px; height: 8px;
+    background: var(--brand-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(232, 163, 61, 0.3);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+  .hero h1 {
+    color: var(--brand-white);
+    font-size: 3.75rem;
+    line-height: 1.05;
+    margin-bottom: var(--space-5);
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+  }
+  @media (max-width: 900px) { .hero h1 { font-size: 2.6rem; } }
+  @media (max-width: 600px) { .hero h1 { font-size: 2.1rem; } }
+  .hero__hl { color: var(--brand-accent); display: inline-block; }
+  .hero__sub {
+    font-size: 1.2rem;
+    line-height: 1.55;
+    opacity: 0.96;
+    margin-bottom: var(--space-6);
+    max-width: 62ch;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  }
+  .hero__ctas {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-7);
+  }
+  .hero :global(.cta--outline) {
+    border-color: rgba(255, 255, 255, 0.65);
+    color: var(--brand-white);
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .hero :global(.cta--outline .cta__icon img) {
+    filter: brightness(0) invert(1);
+  }
+  .hero :global(.cta--outline:hover) {
+    background: var(--brand-white);
+    color: var(--brand-primary);
+    border-color: var(--brand-white);
+  }
+  .hero :global(.cta--outline:hover .cta__icon img) {
+    filter: none;
+  }
+  .hero__signals {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    padding-top: var(--space-5);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .hero__signal {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.95rem;
+    color: var(--brand-white);
+  }
+  .hero__signal strong { color: var(--brand-white); font-weight: 700; }
+  .hero__signal-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.25);
+  }
+  @media (max-width: 700px) { .hero__signal-divider { display: none; } }
+
+  .hero__swoosh {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 120px;
+    display: block;
+    z-index: 2;
+  }
+
+  /* ============ 2. TRUST STRIP ============ */
+  .trust-strip {
+    background: var(--brand-white);
+    padding: var(--space-7) 0;
+    border-bottom: 1px solid var(--brand-border);
+  }
+  .trust-strip__inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-5);
+  }
+  @media (max-width: 700px) { .trust-strip__inner { grid-template-columns: repeat(2, 1fr); } }
+  .trust-strip__item {
+    text-align: center;
+    padding: 0 var(--space-3);
+    border-right: 1px solid var(--brand-border);
+  }
+  .trust-strip__item:last-child { border-right: none; }
+  @media (max-width: 700px) { .trust-strip__item:nth-child(2) { border-right: none; } }
+  .trust-strip__item strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    margin-bottom: 4px;
+  }
+  .trust-strip__item span {
+    font-size: 0.85rem;
+    color: var(--brand-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  /* ============ 3. WHY CHOOSE US ============ */
+  .section--why { background: var(--brand-light-bg); padding: var(--space-10) 0; }
+  .props-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+  @media (max-width: 900px) { .props-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .props-grid { grid-template-columns: 1fr; } }
+  .prop-card {
+    background: var(--brand-white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    border: 1px solid var(--brand-border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  .prop-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: var(--brand-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .prop-card--1::before { background: var(--brand-accent); }
+  .prop-card--2::before { background: var(--brand-secondary); }
+  .prop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .prop-card:hover::before { transform: scaleX(1); }
+  .prop-card__iconwrap {
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--space-4);
+  }
+  .prop-card--1 .prop-card__iconwrap { background: linear-gradient(135deg, var(--brand-accent), #d4912f); }
+  .prop-card--2 .prop-card__iconwrap { background: linear-gradient(135deg, var(--brand-secondary), #2d6db5); }
+  .prop-card__iconwrap img { filter: brightness(0) invert(1); }
+  .prop-card h3 { font-size: 1.2rem; margin-bottom: var(--space-3); }
+  .prop-card p { color: var(--brand-slate); font-size: 0.95rem; margin: 0; line-height: 1.55; }
+
+  /* ============ 4. OUR APPROACH ============ */
+  .section--approach { background: var(--brand-white); padding: var(--space-10) 0; }
+  .approach {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .approach { grid-template-columns: 1fr; } }
+  .approach__media { position: relative; }
+  .approach__image-frame {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 25px 50px -15px rgba(31, 78, 121, 0.3);
+    aspect-ratio: 4 / 5;
+  }
+  .approach__image-frame img { width: 100%; height: 100%; object-fit: cover; }
+  .approach__badge {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    max-width: 340px;
+  }
+  .approach__badge svg {
+    color: var(--brand-accent);
+    flex-shrink: 0;
+  }
+  .approach__badge strong {
+    display: block;
+    font-family: var(--font-heading);
+    color: var(--brand-primary);
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+  }
+  .approach__badge span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--brand-slate);
+  }
+  .approach__badge small {
+    color: var(--brand-slate);
+    display: block;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    margin-top: 3px;
+  }
+  .approach__copy h2 { margin-bottom: var(--space-4); }
+  .approach__copy p {
+    color: var(--brand-slate);
+    margin-bottom: var(--space-4);
+    font-size: 1.02rem;
+    line-height: 1.65;
+  }
+  .approach__copy p:last-of-type { margin-bottom: var(--space-6); }
+
+  /* ============ 5. CONDITIONS ============ */
+  .section--conditions { background: var(--brand-light-bg); padding: var(--space-10) 0; position: relative; overflow: hidden; }
+  .conditions__pattern {
+    position: absolute;
+    top: 0; right: 0; width: 50%; height: 100%;
+    background-image: radial-gradient(circle, rgba(31, 78, 121, 0.04) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    position: relative;
+  }
+  @media (max-width: 1000px) { .tile-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 700px) { .tile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .condition-tile {
+    display: block;
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    text-decoration: none;
+    color: var(--brand-dark-text);
+    position: relative;
+    transition: all 0.2s ease;
+    overflow: hidden;
+  }
+  .condition-tile:hover {
+    border-color: var(--brand-primary);
+    box-shadow: 0 10px 30px -10px rgba(31, 78, 121, 0.25);
+    transform: translateY(-3px);
+  }
+  .condition-tile__icon {
+    width: 56px; height: 56px;
+    background: var(--brand-light-bg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--space-4);
+    transition: background 0.2s ease;
+  }
+  .condition-tile:hover .condition-tile__icon { background: var(--brand-accent); }
+  .condition-tile:hover .condition-tile__icon img { filter: brightness(0) invert(1); }
+  .condition-tile h3 { font-size: 1.1rem; margin-bottom: var(--space-2); color: var(--brand-primary); }
+  .condition-tile p { font-size: 0.85rem; color: var(--brand-slate); margin: 0; }
+  .condition-tile__arrow {
+    position: absolute; right: var(--space-4); top: var(--space-4);
+    color: var(--brand-border);
+    transition: all 0.2s ease;
+  }
+  .condition-tile:hover .condition-tile__arrow { color: var(--brand-accent); transform: translateX(3px); }
+
+  /* ============ 6. TREATMENTS , fixed grid ============ */
+  .section--treatments { background: var(--brand-white); padding: var(--space-10) 0; }
+  .treatments-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+  @media (max-width: 1000px) { .treatments-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .treatments-grid { grid-template-columns: 1fr; } }
+  .treatment-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-decoration: none;
+    color: var(--brand-dark-text);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .treatment-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -15px rgba(31, 78, 121, 0.25);
+    border-color: var(--brand-primary);
+  }
+  .treatment-card--featured {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+    color: var(--brand-white);
+    border-color: var(--brand-primary);
+  }
+  .treatment-card--featured:hover { box-shadow: 0 25px 50px -10px rgba(31, 78, 121, 0.5); }
+  .treatment-card__badge {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    background: var(--brand-accent);
+    color: var(--brand-dark-text);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px var(--space-3);
+    border-radius: var(--radius-full);
+  }
+  .treatment-card__icon {
+    width: 60px; height: 60px;
+    background: var(--brand-light-bg);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--space-4);
+    transition: all 0.25s ease;
+  }
+  .treatment-card--featured .treatment-card__icon {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .treatment-card--featured .treatment-card__icon img { filter: brightness(0) invert(1); }
+  .treatment-card:hover:not(.treatment-card--featured) .treatment-card__icon { background: var(--brand-accent); }
+  .treatment-card:hover:not(.treatment-card--featured) .treatment-card__icon img { filter: brightness(0) invert(1); }
+  .treatment-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-3);
+    color: var(--brand-primary);
+  }
+  .treatment-card--featured h3 { color: var(--brand-white); }
+  .treatment-card p {
+    color: var(--brand-slate);
+    font-size: 0.95rem;
+    margin-bottom: var(--space-5);
+    flex: 1;
+    line-height: 1.55;
+  }
+  .treatment-card--featured p { color: rgba(255, 255, 255, 0.92); }
+  .treatment-card__foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--brand-border);
+  }
+  .treatment-card--featured .treatment-card__foot { border-top-color: rgba(255, 255, 255, 0.2); }
+  .treatment-card__price {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--brand-accent);
+    font-size: 1.1rem;
+  }
+  .treatment-card__link {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--brand-primary);
+    font-size: 0.9rem;
+  }
+  .treatment-card--featured .treatment-card__link { color: var(--brand-accent); }
+
+  /* ============ 7. MID-CTA ============ */
+  .mid-cta {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+    color: var(--brand-white);
+    padding: var(--space-10) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .mid-cta__shapes { position: absolute; inset: 0; pointer-events: none; }
+  .mid-cta__circle { position: absolute; border-radius: 50%; background: rgba(232, 163, 61, 0.15); }
+  .mid-cta__circle--1 { width: 300px; height: 300px; top: -100px; right: -50px; }
+  .mid-cta__circle--2 { width: 200px; height: 200px; bottom: -80px; left: 10%; background: rgba(255, 255, 255, 0.08); }
+  .mid-cta__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  @media (max-width: 850px) { .mid-cta__inner { grid-template-columns: 1fr; text-align: center; } }
+  .mid-cta__eyebrow {
+    display: inline-block;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--brand-accent);
+    margin-bottom: var(--space-3);
+  }
+  .mid-cta h2 { color: var(--brand-white); margin-bottom: var(--space-3); font-size: 2.2rem; }
+  .mid-cta p { font-size: 1.1rem; opacity: 0.95; margin: 0; }
+  .mid-cta__actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  @media (max-width: 850px) { .mid-cta__actions { justify-content: center; } }
+  .mid-cta :global(.cta--outline) { border-color: var(--brand-white); color: var(--brand-white); }
+  .mid-cta :global(.cta--outline:hover) { background: var(--brand-white); color: var(--brand-primary); }
+  .mid-cta :global(.cta--outline .cta__icon img) { filter: brightness(0) invert(1); }
+  .mid-cta :global(.cta--outline:hover .cta__icon img) { filter: none; }
+
+  /* ============ 8. PATIENT EXPERIENCE ============ */
+  .section--experience { background: var(--brand-light-bg); padding: var(--space-10) 0; }
+  .experience {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .experience { grid-template-columns: 1fr; } }
+  .experience__copy h2 { margin-bottom: var(--space-4); }
+  .experience__copy > p {
+    color: var(--brand-slate);
+    margin-bottom: var(--space-4);
+    font-size: 1.02rem;
+    line-height: 1.65;
+  }
+  .experience__list {
+    list-style: none;
+    margin: var(--space-6) 0 0;
+    padding: 0;
+  }
+  .experience__list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: var(--brand-primary);
+  }
+  .experience__list svg {
+    color: var(--brand-accent);
+    background: rgba(232, 163, 61, 0.15);
+    border-radius: 50%;
+    padding: 4px;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .experience__media {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-3);
+    aspect-ratio: 1 / 1;
+  }
+  @media (max-width: 600px) {
+    .experience__media { aspect-ratio: auto; }
+  }
+  .experience__img {
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 15px 30px -10px rgba(31, 78, 121, 0.25);
+  }
+  .experience__img--tall {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+  .experience__img--top {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .experience__stat-card {
+    grid-column: 2;
+    grid-row: 2;
+    background: linear-gradient(135deg, var(--brand-accent) 0%, #d4912f 100%);
+    color: var(--brand-dark-text);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 30px -10px rgba(232, 163, 61, 0.45);
+  }
+  .experience__stat-number {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--brand-primary);
+    letter-spacing: -0.03em;
+  }
+  .experience__stat-number span {
+    font-size: 1rem;
+    margin-left: 4px;
+    font-weight: 500;
+    color: var(--brand-primary);
+    opacity: 0.75;
+  }
+  .experience__stat-card p {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--brand-primary);
+    margin: 0;
+    line-height: 1.4;
+    max-width: 90%;
+  }
+  .experience__stat-icon {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    color: var(--brand-primary);
+    opacity: 0.3;
+  }
+  @media (max-width: 600px) {
+    .experience__media {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+    }
+    .experience__img--tall { grid-column: 1; grid-row: 1; aspect-ratio: 4 / 3; }
+    .experience__img--top { grid-column: 1; grid-row: 2; aspect-ratio: 4 / 3; }
+    .experience__stat-card { grid-column: 1; grid-row: 3; aspect-ratio: 4 / 3; }
+  }
+
+  /* ============ 9. AREAS ============ */
+  .section--areas { background: var(--brand-white); padding: var(--space-10) 0; }
+  .areas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .areas { grid-template-columns: 1fr; } }
+  .areas__copy h2 { margin-bottom: var(--space-4); }
+  .areas__copy > p { color: var(--brand-slate); margin-bottom: var(--space-5); line-height: 1.65; }
+  .area-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+  .area-chip {
+    background: var(--brand-light-bg);
+    border: 1px solid var(--brand-border);
+    color: var(--brand-dark-text);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .area-chip:hover {
+    background: var(--brand-secondary);
+    color: var(--brand-white);
+    border-color: var(--brand-secondary);
+  }
+  .area-chip--primary {
+    background: var(--brand-primary);
+    color: var(--brand-white);
+    border-color: var(--brand-primary);
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .area-chip--primary:hover { background: var(--brand-primary); }
+  .areas__image-frame {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 4 / 5;
+  }
+  .areas__image-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ============ 10. RESOURCES ============ */
+  .section--resources { background: var(--brand-light-bg); padding: var(--space-10) 0; }
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+  @media (max-width: 900px) { .resources-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .resources-grid { grid-template-columns: 1fr; } }
+  .resource-card {
+    display: block;
+    background: var(--brand-white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-decoration: none;
+    color: var(--brand-dark-text);
+    border: 1px solid var(--brand-border);
+    transition: all 0.2s ease;
+  }
+  .resource-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .resource-card__icon {
+    width: 56px; height: 56px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--space-4);
+  }
+  .resource-card--primary .resource-card__icon { background: rgba(31, 78, 121, 0.1); }
+  .resource-card--secondary .resource-card__icon { background: rgba(59, 127, 201, 0.12); }
+  .resource-card--accent .resource-card__icon { background: rgba(232, 163, 61, 0.15); }
+  .resource-card--slate .resource-card__icon { background: rgba(78, 90, 102, 0.12); }
+  .resource-card h3 { font-size: 1.1rem; margin-bottom: var(--space-2); }
+  .resource-card p { font-size: 0.9rem; color: var(--brand-slate); margin-bottom: var(--space-4); }
+  .resource-card__more { font-family: var(--font-heading); font-weight: 600; color: var(--brand-accent); font-size: 0.9rem; }
+
+  /* ============ 11. BLOG ============ */
+  .section--blog { background: var(--brand-white); padding: var(--space-10) 0; }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+  @media (max-width: 900px) { .blog-grid { grid-template-columns: 1fr; } }
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--brand-dark-text);
+    transition: all 0.2s ease;
+  }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--brand-accent); }
+  .blog-card__image { aspect-ratio: 16 / 10; overflow: hidden; position: relative; }
+  .blog-card__image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .blog-card:hover .blog-card__image img { transform: scale(1.05); }
+  .blog-card__tag {
+    position: absolute; top: var(--space-3); left: var(--space-3);
+    background: var(--brand-accent);
+    color: var(--brand-dark-text);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 5px var(--space-3);
+    border-radius: var(--radius-full);
+  }
+  .blog-card__body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1;
+  }
+  .blog-card__meta {
+    font-size: 0.8rem;
+    color: var(--brand-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .blog-card h3 { font-size: 1.15rem; margin: 0; line-height: 1.3; }
+  .blog-card p { color: var(--brand-slate); font-size: 0.95rem; margin: 0; flex: 1; }
+  .blog-card__more { font-family: var(--font-heading); font-weight: 600; color: var(--brand-accent); font-size: 0.95rem; }
+
+  /* ============ 13. SEO CONTENT ============ */
+  .seo-content { background: var(--brand-light-bg); padding: var(--space-10) 0; }
+  .seo-content h2 { text-align: center; margin-bottom: var(--space-6); }
+  .seo-content p {
+    color: var(--brand-slate);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-5);
+  }
+
+  /* ============ 14. FORM CTA , light, medical, contrast with footer ============ */
+  .form-cta {
+    position: relative;
+    background: linear-gradient(180deg, var(--brand-white) 0%, var(--brand-light-bg) 100%);
+    color: var(--brand-dark-text);
+    padding: var(--space-12) 0 var(--space-12);
+    overflow: hidden;
+  }
+  .form-cta__bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 90% 10%, rgba(232, 163, 61, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 5% 90%, rgba(31, 78, 121, 0.06) 0%, transparent 50%);
+  }
+  .form-cta__pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(31, 78, 121, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .form-cta__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (max-width: 900px) { .form-cta__inner { grid-template-columns: 1fr; } }
+  .form-cta__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--brand-accent);
+    margin-bottom: var(--space-4);
+    padding: 6px var(--space-4);
+    background: rgba(232, 163, 61, 0.12);
+    border: 1px solid rgba(232, 163, 61, 0.35);
+    border-radius: var(--radius-full);
+  }
+  .form-cta__copy h2 {
+    color: var(--brand-primary);
+    font-size: 2.8rem;
+    line-height: 1.1;
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.02em;
+  }
+  @media (max-width: 900px) { .form-cta__copy h2 { font-size: 2.2rem; } }
+  .form-cta__lede { font-size: 1.1rem; color: var(--brand-slate); margin-bottom: var(--space-6); line-height: 1.55; }
+  .form-cta__list { list-style: none; margin: 0 0 var(--space-7); padding: 0; }
+  .form-cta__list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--brand-dark-text);
+    font-size: 1.02rem;
+  }
+  .form-cta__check {
+    width: 28px; height: 28px;
+    background: var(--brand-accent);
+    color: var(--brand-white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px -2px rgba(232, 163, 61, 0.5);
+  }
+  .form-cta__phone {
+    padding: var(--space-5);
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-left: 4px solid var(--brand-accent);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .form-cta__phone-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--brand-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-2);
+    font-weight: 600;
+  }
+  .form-cta__phone-number {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--space-2);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2.1rem;
+    color: var(--brand-primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .form-cta__phone-number img {
+    filter: invert(26%) sepia(30%) saturate(1351%) hue-rotate(169deg) brightness(91%) contrast(89%);
+    height: 22px;
+    width: 22px;
+  }
+  .form-cta__phone-number:hover { color: var(--brand-secondary); }
+  .form-cta__form-wrap {
+    background: var(--brand-white);
+    color: var(--brand-dark-text);
+    border-radius: var(--radius-lg);
+    padding: var(--space-7);
+    box-shadow: 0 30px 60px -20px rgba(31, 78, 121, 0.25);
+    border: 1px solid var(--brand-border);
+    position: relative;
+  }
+  .form-cta__form-wrap::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: var(--space-7);
+    right: var(--space-7);
+    height: 8px;
+    background: linear-gradient(90deg, var(--brand-accent), var(--brand-secondary));
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  .form-cta__form-header {
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--brand-border);
+  }
+  .form-cta__form-header h3 {
+    font-size: 1.4rem;
+    color: var(--brand-primary);
+    margin-bottom: var(--space-2);
+  }
+  .form-cta__form-header p { color: var(--brand-slate); font-size: 0.95rem; margin: 0; }
+  .form-cta__form-wrap :global(.form-embed) { padding: 0; margin: 0; }
+  .form-cta__form-wrap :global(.form-embed .container--narrow) { padding: 0; max-width: 100%; }
+  .form-cta__form-wrap :global(.form-embed__wrap) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  .form-cta__form-wrap :global(.form-embed h2) { display: none; }
+</style>

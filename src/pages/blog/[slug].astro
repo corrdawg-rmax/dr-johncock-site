@@ -1,0 +1,249 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import BlogSummaryCard from "../../components/BlogSummaryCard.astro";
+import CTAButton from "../../components/CTAButton.astro";
+import FormEmbed from "../../components/FormEmbed.astro";
+import RelatedPosts from "../../components/RelatedPosts.astro";
+import { blogPosts, getCategory } from "../../data/blog";
+import { getConditionPage, getTreatmentPage } from "../../data/clinical";
+import { config } from "../../lib/config";
+
+export const getStaticPaths = () =>
+  blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+
+const { post } = Astro.props;
+const category = getCategory(post.category)!;
+const relatedConditions = post.relatedConditionSlugs.map(getConditionPage).filter(Boolean);
+const relatedTreatments = post.relatedTreatmentSlugs.map(getTreatmentPage).filter(Boolean);
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": `${config.seo.site_url}/#clinic`,
+      "name": config.practice.name,
+      "url": config.seo.site_url,
+      "telephone": config.contact.phone,
+      "medicalSpecialty": "Podiatric",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": [config.contact.address_line_1, config.contact.address_line_2].filter(Boolean).join(", "),
+        "addressLocality": config.contact.city,
+        "addressRegion": config.contact.state,
+        "postalCode": config.contact.zip,
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": `${config.seo.site_url}${post.href}#post`,
+      "url": `${config.seo.site_url}${post.href}`,
+      "headline": post.title,
+      "description": post.metaDescription,
+      "image": `${config.seo.site_url}${post.image}`,
+      "publisher": { "@id": `${config.seo.site_url}/#clinic` },
+      "about": relatedConditions.map((condition) => ({
+        "@type": "MedicalCondition",
+        "name": condition?.eyebrow
+      }))
+    },
+    {
+      "@type": "MedicalWebPage",
+      "@id": `${config.seo.site_url}${post.href}#webpage`,
+      "url": `${config.seo.site_url}${post.href}`,
+      "name": post.metaTitle,
+      "description": post.metaDescription,
+      "about": { "@id": `${config.seo.site_url}/#clinic` }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={post.metaTitle}
+  description={post.metaDescription}
+  canonicalPath={post.href}
+  ogImage={post.image}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <article class="post">
+    <header class="post__header">
+      <div class="container--narrow">
+        <p class="post__category">{category.name}</p>
+        <h1>{post.title}</h1>
+        <p class="post__lede">{post.lede}</p>
+      </div>
+    </header>
+
+    <Breadcrumbs items={[{ label: "Blog", href: "/blog/" }, { label: post.title }]} />
+
+    <div class="post__hero">
+      <img src={post.image} alt={post.imageAlt} width="1200" height="600" loading="eager" />
+    </div>
+
+    <div class="container--narrow post__body">
+      <BlogSummaryCard
+        title={post.summaryTitle}
+        intro={post.summaryIntro}
+        facts={post.facts}
+        rows={post.rows}
+      />
+
+      {post.sections.map((section) => (
+        <section class="post-section">
+          <h2>{section.heading}</h2>
+          {section.body.map((paragraph) => <p>{paragraph}</p>)}
+        </section>
+      ))}
+
+      <section class="link-panel">
+        <h2>Relevant Pages</h2>
+        <div class="link-panel__grid">
+          {relatedConditions.map((condition) => condition && (
+            <a href={`/conditions/${condition.slug}/`}>
+              <span>Condition</span>
+              <strong>{condition.eyebrow}</strong>
+              <p>{condition.overview}</p>
+            </a>
+          ))}
+          {relatedTreatments.map((treatment) => treatment && (
+            <a href={`/treatments/${treatment.slug}/`}>
+              <span>Treatment</span>
+              <strong>{treatment.eyebrow}</strong>
+              <p>{treatment.overview}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <div class="post__cta">
+        <h2>Need Help With This Foot Problem?</h2>
+        <p>Request an appointment with Carolina Podiatry Center or call {config.contact.phone} to confirm scheduling details.</p>
+        <div class="post__cta-row">
+          <CTAButton href="#book" variant="primary">Request Appointment</CTAButton>
+          <CTAButton href="/conditions/" variant="outline">Browse Conditions</CTAButton>
+        </div>
+      </div>
+
+      <RelatedPosts currentSlug={post.slug} category={post.category} />
+    </div>
+  </article>
+
+  <FormEmbed slug="appointment" title="Request a Podiatry Appointment" />
+</BaseLayout>
+
+<style>
+  .post__header {
+    background: var(--brand-light-bg);
+    padding: var(--space-9) 0 var(--space-7);
+    text-align: center;
+  }
+  .post__category {
+    color: var(--brand-secondary);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-4);
+    text-transform: uppercase;
+  }
+  .post__header h1 {
+    font-size: 2.75rem;
+    margin-bottom: var(--space-4);
+  }
+  .post__lede {
+    color: var(--brand-slate);
+    font-size: 1.2rem;
+    margin: 0 auto;
+    max-width: 62ch;
+  }
+  .post__hero {
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: var(--space-6) var(--container-padding);
+  }
+  .post__hero img {
+    aspect-ratio: 2 / 1;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    width: 100%;
+  }
+  .post__body {
+    font-size: 1.05rem;
+    padding: var(--space-6) 0 var(--space-9);
+  }
+  .post-section h2 {
+    margin-top: var(--space-7);
+  }
+  .link-panel {
+    margin-top: var(--space-8);
+  }
+  .link-panel__grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .link-panel__grid a {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    color: inherit;
+    padding: var(--space-4);
+    text-decoration: none;
+  }
+  .link-panel__grid a:hover {
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+  }
+  .link-panel__grid span {
+    color: var(--brand-accent);
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+  }
+  .link-panel__grid strong {
+    color: var(--brand-primary);
+    display: block;
+    font-family: var(--font-heading);
+    margin-bottom: var(--space-2);
+  }
+  .link-panel__grid p,
+  .post__cta p {
+    color: var(--brand-slate);
+    font-size: 0.95rem;
+  }
+  .post__cta {
+    background: var(--brand-light-bg);
+    border-radius: var(--radius-md);
+    margin: var(--space-8) 0 var(--space-6);
+    padding: var(--space-7);
+    text-align: center;
+  }
+  .post__cta h2 {
+    margin-bottom: var(--space-3);
+  }
+  .post__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-5);
+  }
+  @media (max-width: 850px) {
+    .post__header h1 {
+      font-size: 2rem;
+    }
+    .link-panel__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

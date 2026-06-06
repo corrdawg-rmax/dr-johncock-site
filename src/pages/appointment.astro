@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import FormEmbed from "../components/FormEmbed.astro";
+import { config } from "../lib/config";
+---
+
+<BaseLayout title={`Request Appointment | ${config.practice.name}`} description="Request a podiatry appointment and let the clinic team confirm scheduling, coverage, and next steps." canonicalPath="/appointment">
+  <section class="page-hero">
+    <div class="container--narrow">
+      <p class="eyebrow">Appointment Request</p>
+      <h1>Request a Consultation</h1>
+      <p class="lede">Use the form below and the clinic team can follow up about scheduling, coverage, and the best next step for your concern.</p>
+    </div>
+  </section>
+  <Breadcrumbs items={[{ label: "Appointment" }]} />
+  <FormEmbed slug="appointment" title="Request an appointment" />
+</BaseLayout>
+
+<style>
+  .page-hero { background: var(--brand-light-bg); padding: var(--space-8) 0; text-align: center; }
+  .eyebrow { color: var(--brand-accent); font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: var(--space-3); text-transform: uppercase; }
+  .lede { color: var(--brand-slate); }
+</style>

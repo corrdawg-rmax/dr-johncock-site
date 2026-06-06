@@ -1,0 +1,426 @@
+---
+import { config, telLink } from "../lib/config";
+
+const b = config.branding;
+const nav = config.navigation.main;
+const showLogoText = b.logo_text_mode !== "image_only";
+const hasPhone = Boolean(config.contact.phone && config.contact.phone_raw);
+const headerLabel = (label: string) => label;
+
+const conditionLinks = [
+  { label: "Heel Pain", href: "/conditions/heel-pain/", note: "Heel soreness, heel spurs, and pain with standing" },
+  { label: "Plantar Fasciitis", href: "/conditions/plantar-fasciitis/", note: "Heel and arch pain with first steps" },
+  { label: "Bunions", href: "/conditions/bunions/", note: "Big toe joint pain and shoe pressure" },
+  { label: "Ingrown Toenails", href: "/conditions/ingrown-toenails/", note: "Painful nail edges, redness, and repeat problems" },
+  { label: "Diabetic Foot Care", href: "/conditions/diabetic-foot-care/", note: "Preventive exams, wounds, and high-risk feet" },
+  { label: "Sports Injuries", href: "/conditions/sports-injuries/", note: "Running pain, sprains, tendon strain, and overuse" },
+  { label: "Ankle Pain", href: "/conditions/ankle-pain/", note: "Sprains, swelling, instability, and tendon pain" },
+  { label: "Nail & Skin Problems", href: "/conditions/fungal-toenails/", note: "Fungal nails, calluses, corns, and plantar warts" },
+];
+
+const treatmentLinks = [
+  { label: "Custom Orthotics", href: "/treatments/orthotics/", note: "Support for arch, heel, and forefoot pain" },
+  { label: "Shockwave Therapy", href: "/treatments/shockwave-therapy/", note: "Advanced option for stubborn heel and tendon pain" },
+  { label: "Conservative Care", href: "/treatments/conservative-care/", note: "Stretching, taping, footwear, and activity changes" },
+  { label: "Surgical Care", href: "/treatments/surgery/", note: "When simpler treatment is not enough" },
+  { label: "Nail Procedures", href: "/treatments/ingrown-toenail-removal/", note: "Relief for painful or recurring ingrown nails" },
+  { label: "Diabetic Foot Care", href: "/treatments/diabetic-foot-care/", note: "Ongoing prevention and wound support" },
+  { label: "Sports Foot Care", href: "/treatments/sports-foot-care/", note: "Care for runners, athletes, and active patients" },
+  { label: "Injections & Advanced Care", href: "/treatments/prp-injections/", note: "Options used when first-step care is not enough" },
+];
+
+const resourceLinks = [
+  { label: "Patient Resources", href: "/patient-resources/", note: "Forms, visit prep, insurance notes, and common next steps" },
+  { label: "Compare Care Options", href: "/compare/", note: "Plain comparisons for treatment choices and condition paths" },
+  { label: "Blog Articles", href: "/blog/", note: "Helpful foot care articles grouped by topic" },
+  { label: "New Patient Guide", href: "/new-patients/", note: "What to bring and what to expect at the first visit" },
+  { label: "Insurance & Payment", href: "/insurance/", note: "Coverage questions patients should confirm before booking" },
+  { label: "FAQ", href: "/faq/", note: "Common questions about visits, care, and scheduling" },
+];
+
+const megaMenuFor = (label: string) => {
+  if (label === "Patient Resources") return { title: "Patient Resources", href: "/patient-resources/", links: resourceLinks };
+  if (label === "Conditions") return { title: "Common Foot & Ankle Conditions", href: "/conditions/", links: conditionLinks };
+  if (label === "Treatments") return { title: "Major Treatment Options", href: "/treatments/", links: treatmentLinks };
+  return null;
+};
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="/" class="site-header__brand" aria-label={`${b.logo_display_text} home`}>
+      <img src={b.logo_path} alt={b.logo_alt} width="56" height="56" />
+      {showLogoText && <span class="site-header__brand-text">{b.logo_display_text}</span>}
+    </a>
+
+    <nav class="site-header__nav" aria-label="Main navigation">
+      <ul>
+        {nav.map((link) => {
+          const mega = megaMenuFor(link.label);
+          return (
+            <li class={mega ? "site-header__nav-item site-header__nav-item--mega" : "site-header__nav-item"}>
+              {mega ? (
+                <button class="site-header__nav-link site-header__nav-button" type="button" aria-expanded="false">
+                  {headerLabel(link.label)}
+                  <span class="site-header__chevron" aria-hidden="true">
+                    <img src="/icons/down-chevron.svg" alt="" width="12" height="12" />
+                  </span>
+                </button>
+              ) : (
+                <a href={link.href} class="site-header__nav-link">{headerLabel(link.label)}</a>
+              )}
+              {mega && (
+                <div class="mega-menu">
+                  <div class="mega-menu__intro">
+                    <p>{mega.title}</p>
+                    <a href={mega.href}>View all {link.label.toLowerCase()}</a>
+                  </div>
+                  <div class="mega-menu__links">
+                    {mega.links.map((item) => (
+                      <a href={item.href} class="mega-menu__link">
+                        <strong>{item.label}</strong>
+                        <span>{item.note}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    {hasPhone && <div class="site-header__cta">
+      <a href={telLink()} class="cta cta--primary" aria-label={`Call us at ${config.contact.phone}`}>
+        <span class="cta__icon"><img src="/icons/telephone.svg" alt="" width="18" height="18" /></span>
+        {config.contact.phone}
+      </a>
+      <a href="/#book" class="cta cta--accent site-header__consult">
+        <span class="site-header__consult-icon"><img src="/icons/mail.svg" alt="" width="18" height="18" /></span>
+        {config.appointments?.booking_cta_label || "Request Appointment"}
+      </a>
+    </div>}
+
+    <button class="site-header__menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--brand-white);
+    border-bottom: 1px solid var(--brand-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+  .site-header__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .site-header__brand img {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+  }
+  .site-header__brand-text {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.08;
+    color: var(--brand-primary);
+    letter-spacing: -0.01em;
+    max-width: 82px;
+    white-space: normal;
+  }
+  .site-header__nav {
+    flex: 1;
+    min-width: 0;
+  }
+  .site-header__nav ul {
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+  .site-header__nav-item {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    position: relative;
+    white-space: nowrap;
+  }
+  .site-header__nav-link {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.25rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--brand-dark-text);
+    text-decoration: none;
+    padding: var(--space-3) 0;
+    font-size: 0.92rem;
+    line-height: 1.2;
+    min-height: 44px;
+    white-space: nowrap;
+  }
+  .site-header__nav-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .site-header__nav-link:hover {
+    color: var(--brand-primary);
+  }
+  .site-header__chevron {
+    align-items: center;
+    display: inline-flex;
+    height: 14px;
+    justify-content: center;
+    width: 14px;
+  }
+  .site-header__chevron img {
+    filter: invert(63%) sepia(67%) saturate(595%) hue-rotate(355deg) brightness(95%) contrast(90%);
+    height: 12px;
+    width: 12px;
+  }
+  .site-header__cta {
+    display: flex;
+    gap: var(--space-2);
+    flex-shrink: 0;
+  }
+  .site-header__cta .cta {
+    font-size: 0.92rem;
+    padding: var(--space-3) var(--space-4);
+  }
+  .site-header__consult-icon {
+    align-items: center;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+  }
+  .site-header__consult-icon img {
+    display: block;
+    height: 16px;
+    width: 16px;
+  }
+  .site-header__menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-2);
+    flex-direction: column;
+    gap: 4px;
+  }
+  .site-header__menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--brand-primary);
+  }
+  .mega-menu {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 0.8fr 1.7fr;
+    left: 50%;
+    min-width: min(760px, calc(100vw - 32px));
+    opacity: 0;
+    padding: var(--space-5);
+    pointer-events: none;
+    position: absolute;
+    top: 100%;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    white-space: normal;
+    z-index: 20;
+  }
+  .mega-menu::before {
+    content: "";
+    height: 12px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -12px;
+  }
+  .site-header__nav-item--mega:hover .mega-menu,
+  .site-header__nav-item--mega:focus-within .mega-menu,
+  .site-header__nav-item--mega.is-open .mega-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .mega-menu__intro {
+    background: var(--brand-light-bg);
+    border-radius: var(--radius-sm);
+    padding: var(--space-4);
+  }
+  .mega-menu__intro p {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: var(--space-3);
+  }
+  .mega-menu__intro a {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .mega-menu__links {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr 1fr;
+  }
+  .mega-menu__link {
+    border-radius: var(--radius-sm);
+    color: var(--brand-dark-text);
+    display: block;
+    padding: var(--space-3);
+    text-decoration: none;
+  }
+  .mega-menu__link:hover {
+    background: var(--brand-light-bg);
+  }
+  .mega-menu__link strong {
+    color: var(--brand-primary);
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+  .mega-menu__link span {
+    color: var(--brand-slate);
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  @media (max-width: 900px) {
+    .site-header__brand-text { display: none; }
+    .site-header__nav { display: none; }
+    .site-header__consult { display: none; }
+    .site-header__menu-toggle { display: flex; }
+    .site-header__nav.open {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--brand-white);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-4);
+      max-height: calc(100vh - 120px);
+      overflow: auto;
+    }
+    .site-header__nav.open ul {
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .site-header__nav-link {
+      border-bottom: 1px solid var(--brand-border);
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-3) 0;
+      width: 100%;
+    }
+    .mega-menu {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      display: none;
+      left: auto;
+      min-width: 0;
+      opacity: 1;
+      padding: var(--space-2) 0 var(--space-4);
+      pointer-events: auto;
+      position: static;
+      transform: none;
+    }
+    .site-header__nav-item--mega.is-open .mega-menu {
+      display: block;
+    }
+    .mega-menu__intro {
+      margin-bottom: var(--space-2);
+      padding: var(--space-3);
+    }
+    .mega-menu__links {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+    .mega-menu__link {
+      padding: var(--space-2) var(--space-3);
+    }
+  }
+  @media (max-width: 520px) {
+    .site-header__cta .cta {
+      font-size: 0.85rem;
+      padding-left: var(--space-3);
+      padding-right: var(--space-3);
+    }
+  }
+</style>
+
+<script is:inline>
+  const toggle = document.getElementById("menu-toggle");
+  const nav = document.querySelector(".site-header__nav");
+  const megaItems = document.querySelectorAll(".site-header__nav-item--mega");
+
+  megaItems.forEach((item) => {
+    const button = item.querySelector(".site-header__nav-button");
+    button?.addEventListener("click", () => {
+      const willOpen = !item.classList.contains("is-open");
+      megaItems.forEach((other) => {
+        if (other !== item) {
+          other.classList.remove("is-open");
+          other.querySelector(".site-header__nav-button")?.setAttribute("aria-expanded", "false");
+        }
+      });
+      item.classList.toggle("is-open", willOpen);
+      button.setAttribute("aria-expanded", String(willOpen));
+    });
+  });
+
+  toggle?.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest(".site-header__nav-item--mega")) return;
+    megaItems.forEach((item) => {
+      item.classList.remove("is-open");
+      item.querySelector(".site-header__nav-button")?.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>

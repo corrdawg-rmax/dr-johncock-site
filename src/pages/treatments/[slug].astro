@@ -1,0 +1,301 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTAButton from "../../components/CTAButton.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import FormEmbed from "../../components/FormEmbed.astro";
+import { treatmentPages } from "../../data/clinical";
+import { getPostsByCategory } from "../../data/blog";
+import { config } from "../../lib/config";
+
+export const getStaticPaths = () =>
+  treatmentPages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+
+const { page } = Astro.props;
+const relatedPosts = getPostsByCategory(page.blogCategory, 3);
+const canonicalPath = `/treatments/${page.slug}/`;
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": `${config.seo.site_url}/#clinic`,
+      "name": config.practice.name,
+      "url": config.seo.site_url,
+      "telephone": config.contact.phone,
+      "medicalSpecialty": "Podiatric",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": [config.contact.address_line_1, config.contact.address_line_2].filter(Boolean).join(", "),
+        "addressLocality": config.contact.city,
+        "addressRegion": config.contact.state,
+        "postalCode": config.contact.zip,
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": `${config.seo.site_url}${canonicalPath}#service`,
+      "name": page.eyebrow,
+      "description": page.metaDescription,
+      "provider": { "@id": `${config.seo.site_url}/#clinic` },
+      "areaServed": {
+        "@type": "City",
+        "name": "Hickory"
+      }
+    },
+    {
+      "@type": "MedicalWebPage",
+      "@id": `${config.seo.site_url}${canonicalPath}#webpage`,
+      "url": `${config.seo.site_url}${canonicalPath}`,
+      "name": page.title,
+      "description": page.metaDescription,
+      "about": [
+        { "@id": `${config.seo.site_url}${canonicalPath}#service` },
+        { "@id": `${config.seo.site_url}/#clinic` }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${config.seo.site_url}${canonicalPath}#faq`,
+      "mainEntity": page.faqs.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.metaDescription}
+  canonicalPath={canonicalPath}
+  ogImage={page.image}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="detail-hero">
+    <div class="container detail-hero__grid">
+      <div>
+        <p class="eyebrow">{page.eyebrow}</p>
+        <h1>{page.h1}</h1>
+        <p class="lede">{page.lede}</p>
+        <div class="button-row">
+          <CTAButton href="#book" variant="primary">Request Appointment</CTAButton>
+          <CTAButton href="/treatments/" variant="outline">All Treatments</CTAButton>
+        </div>
+      </div>
+      <img src={page.image} alt={page.imageAlt} loading="eager" />
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "Treatments", href: "/treatments/" }, { label: page.eyebrow }]} />
+
+  <section class="section section--tight">
+    <div class="container treatment-grid">
+      <aside class="quick-card">
+        <img src={page.icon} alt="" width="42" height="42" />
+        <h2>Often Discussed For</h2>
+        <ul>
+          {page.bestFor.map((item) => <li>{item}</li>)}
+        </ul>
+      </aside>
+
+      <div class="detail-copy">
+        <h2>How This Treatment Conversation Starts</h2>
+        <p>{page.fitNotes}</p>
+
+        <h2>What May Happen at the Visit</h2>
+        <ol>
+          {page.visitSteps.map((step) => <li>{step}</li>)}
+        </ol>
+
+        <h2>Important Limits</h2>
+        <p>{page.limits}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container">
+      <div class="compact-head">
+        <p class="eyebrow">Related Conditions</p>
+        <h2>Pages That Connect to {page.eyebrow}</h2>
+      </div>
+      <div class="card-grid card-grid--three">
+        {page.relatedLinks.map((item) => (
+          <a href={item.href} class="info-card">
+            <h3>{item.label}</h3>
+            <p>{item.text}</p>
+            <span>View page</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="compact-head">
+        <p class="eyebrow">Patient Guides</p>
+        <h2>Related Articles</h2>
+      </div>
+      <div class="card-grid card-grid--three">
+        {relatedPosts.map((post) => (
+          <a href={post.href} class="post-card">
+            <img src={post.image} alt={post.imageAlt} loading="lazy" />
+            <div>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="medical-note">This page is educational and does not promise a specific treatment, device, result, price, or insurance coverage. Call Carolina Podiatry Center to confirm current availability and fit.</p>
+    </div>
+  </section>
+
+  <FAQAccordion title={`${page.eyebrow} FAQs`} items={page.faqs} />
+  <FormEmbed slug="appointment" title={`Ask About ${page.eyebrow}`} />
+</BaseLayout>
+
+<style>
+  .detail-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+  }
+  .detail-hero__grid,
+  .treatment-grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .detail-hero__grid {
+    align-items: center;
+    grid-template-columns: 1fr 0.85fr;
+  }
+  .detail-hero img {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    width: 100%;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .lede,
+  .compact-head p,
+  .detail-copy p,
+  .info-card p,
+  .post-card p,
+  .medical-note {
+    color: var(--brand-slate);
+  }
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .treatment-grid {
+    align-items: start;
+    grid-template-columns: 0.35fr 1fr;
+  }
+  .quick-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-5);
+  }
+  .quick-card img {
+    margin-bottom: var(--space-3);
+  }
+  .quick-card ul,
+  .detail-copy ol {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+  .detail-copy h2 {
+    margin-top: var(--space-6);
+  }
+  .detail-copy h2:first-child {
+    margin-top: 0;
+  }
+  .compact-head {
+    margin-bottom: var(--space-5);
+    max-width: 760px;
+  }
+  .card-grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .card-grid--three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .info-card,
+  .post-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    text-decoration: none;
+  }
+  .info-card {
+    padding: var(--space-5);
+  }
+  .info-card:hover,
+  .post-card:hover {
+    box-shadow: var(--shadow-md);
+    color: inherit;
+  }
+  .info-card h3,
+  .post-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: var(--space-2);
+  }
+  .info-card span {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-weight: 700;
+  }
+  .post-card {
+    overflow: hidden;
+  }
+  .post-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+  }
+  .post-card div {
+    padding: var(--space-4);
+  }
+  .medical-note {
+    font-size: 0.92rem;
+    margin-top: var(--space-5);
+  }
+  @media (max-width: 850px) {
+    .detail-hero__grid,
+    .treatment-grid,
+    .card-grid--three {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

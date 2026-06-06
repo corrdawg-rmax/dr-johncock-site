@@ -1,0 +1,266 @@
+---
+import { config, telLink, fullAddress } from "../lib/config";
+
+const cols = config.navigation.footer_columns;
+const visibleCols = cols.slice(0, 3);
+const year = new Date().getFullYear();
+const b = config.branding;
+const showLogoText = b.logo_text_mode !== "image_only";
+const address = fullAddress();
+const hasPhone = Boolean(config.contact.phone && config.contact.phone_raw);
+const hasMap = Boolean(config.contact.google_maps_embed_url);
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <a href="/" class="site-footer__logo">
+          <img src={b.logo_path} alt={b.logo_alt} width="48" height="48" />
+          {showLogoText && <span>{b.logo_display_text}</span>}
+        </a>
+        <p class="site-footer__tagline">{config.practice.short_description}</p>
+        {(hasPhone || address) && (
+          <p class="site-footer__contact">
+            {hasPhone && <a href={telLink()}>{config.contact.phone}</a>}
+            {hasPhone && address && <br />}
+            {address && <span>{address}</span>}
+          </p>
+        )}
+      </div>
+
+      {visibleCols.map((col) => (
+        <div class="site-footer__col">
+          <h3>{col.title}</h3>
+          <ul>
+            {col.links.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    {hasMap && (
+      <div class="site-footer__location">
+        <div class="site-footer__location-copy">
+          <h3>Visit the Practice</h3>
+          <div class="site-footer__contact-list">
+            {hasPhone && (
+              <a class="site-footer__contact-item" href={telLink()}>
+                <img src="/icons/telephone.svg" alt="" width="22" height="22" />
+                <span>
+                  <strong>Phone</strong>
+                  {config.contact.phone}
+                </span>
+              </a>
+            )}
+            {address && (
+              <div class="site-footer__contact-item">
+                <img src="/icons/location.svg" alt="" width="22" height="22" />
+                <span>
+                  <strong>Address</strong>
+                  {address}
+                </span>
+              </div>
+            )}
+            {config.hours?.monday && (
+              <div class="site-footer__contact-item">
+                <img src="/icons/clock.svg" alt="" width="22" height="22" />
+                <span>
+                  <strong>Office Hours</strong>
+                  {config.hours.monday === config.hours.friday ? `Mon-Fri ${config.hours.monday}` : "See contact page for daily hours"}
+                </span>
+              </div>
+            )}
+          </div>
+          {config.contact.google_maps_link && (
+            <a class="site-footer__directions" href={config.contact.google_maps_link} target="_blank" rel="noopener">Get directions</a>
+          )}
+        </div>
+        <div class="site-footer__map">
+          <iframe
+            src={config.contact.google_maps_embed_url}
+            width="520"
+            height="300"
+            style="border:0;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title={`${config.practice.name} map`}
+          ></iframe>
+        </div>
+      </div>
+    )}
+
+    <div class="site-footer__bottom">
+      <p>© {year} {config.practice.name}. All rights reserved.</p>
+      <p><a href="/privacy">Privacy Policy</a> · <a href="/sitemap">Sitemap</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--brand-primary);
+    color: var(--brand-white);
+    padding: var(--space-9) 0 var(--space-5);
+    margin-top: 0;
+    position: relative;
+  }
+  .site-footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brand-accent), var(--brand-secondary));
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 1.45fr) repeat(3, minmax(135px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-7);
+  }
+  @media (max-width: 1000px) {
+    .site-footer__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .site-footer__grid { grid-template-columns: 1fr; }
+  }
+  .site-footer__brand { padding-right: var(--space-5); }
+  .site-footer__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--brand-white);
+    text-decoration: none;
+    margin-bottom: var(--space-4);
+  }
+  .site-footer__logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+  }
+  .site-footer__logo span {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .site-footer__tagline {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-bottom: var(--space-4);
+  }
+  .site-footer__contact {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .site-footer__contact a {
+    color: var(--brand-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .site-footer__col h3 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--brand-white);
+    margin-bottom: var(--space-3);
+  }
+  .site-footer__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .site-footer__col li {
+    margin-bottom: var(--space-2);
+  }
+  .site-footer__col a {
+    color: var(--brand-white);
+    opacity: 0.85;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .site-footer__col a:hover { opacity: 1; text-decoration: underline; }
+  .site-footer__location {
+    align-items: stretch;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    margin-bottom: var(--space-6);
+    padding-top: var(--space-6);
+  }
+  .site-footer__location-copy h3 {
+    color: var(--brand-white);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    margin-bottom: var(--space-3);
+  }
+  .site-footer__contact-list {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .site-footer__contact-item {
+    align-items: flex-start;
+    color: var(--brand-white);
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 28px 1fr;
+    line-height: 1.45;
+    text-decoration: none;
+  }
+  .site-footer__contact-item img {
+    filter: invert(70%) sepia(70%) saturate(675%) hue-rotate(346deg) brightness(96%) contrast(94%);
+    opacity: 1;
+    width: 22px;
+  }
+  .site-footer__contact-item strong {
+    color: var(--brand-white);
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    margin-bottom: 0.1rem;
+  }
+  .site-footer__contact-item span {
+    opacity: 0.9;
+  }
+  .site-footer__directions {
+    color: var(--brand-accent);
+    display: inline-flex;
+    font-weight: 700;
+    margin-top: var(--space-1);
+    text-decoration: none;
+  }
+  .site-footer__map {
+    border-radius: var(--radius-md);
+    min-height: 300px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .site-footer__map iframe {
+    display: block;
+    height: 100%;
+    min-height: 300px;
+    width: 100%;
+  }
+  @media (max-width: 850px) {
+    .site-footer__location { grid-template-columns: 1fr; }
+  }
+  .site-footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: var(--space-5);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+  .site-footer__bottom a {
+    color: var(--brand-white);
+    text-decoration: underline;
+  }
+</style>

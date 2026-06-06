@@ -1,0 +1,41 @@
+---
+import { config } from "../lib/config";
+
+export interface Props {
+  slug?: string;
+  title?: string;
+}
+
+const { slug = "appointment", title = "Request an Appointment" } = Astro.props;
+const form = config.forms[slug];
+const isForm = form && typeof form !== "string";
+---
+
+{isForm && (
+  <section class="form-embed section" id="book">
+    <div class="container--narrow">
+      <h2>{title}</h2>
+      <div class="form-embed__wrap" style={`max-width: ${(form as any).container_max_width_px}px; min-height: ${(form as any).default_height_px}px;`}>
+        <Fragment set:html={(form as any).embed_html} />
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .form-embed h2 { text-align: center; margin-bottom: var(--space-6); }
+  .form-embed__wrap {
+    margin: 0 auto;
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    padding: var(--space-3);
+  }
+  .form-embed__wrap iframe {
+    width: 100%;
+    border: none;
+    display: block;
+  }
+</style>

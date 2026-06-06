@@ -1,0 +1,283 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CTAButton from "../components/CTAButton.astro";
+import { config, fullAddress, getClientImage } from "../lib/config";
+
+const displayCity = config.practice.city || "Hickory";
+const displayState = config.practice.state || "NC";
+const photos = config.client_images?.photos || [];
+const doctorShoePhoto = photos.find((photo) => photo.id === "doctor-running-shoe")
+  || getClientImage("doctor_profile")
+  || { file_path: config.doctor.photo || "/images/doctor-patient-consultation.png", alt_text: `${config.doctor.name || "Podiatrist"} portrait` };
+const doctorMedalPhoto = photos.find((photo) => photo.id === "doctor-runner-patient-medal") || doctorShoePhoto;
+const officePhoto = getClientImage("about_page", "clinic_interior") || getClientImage("clinic_gallery", "clinic_interior");
+const address = fullAddress();
+
+const practiceLinks = [
+  { icon: "/icons/doctor.svg", title: "Meet the Doctor", href: "/doctor/", body: "Learn more about Dr. Johncock's podiatry background and clinical focus." },
+  { icon: "/icons/calendar.svg", title: "Request Appointment", href: "/appointment/", body: "Send an appointment request and the office can confirm the next step." },
+  { icon: "/icons/clipboard.svg", title: "New Patients", href: "/new-patients/", body: "Review what to bring and how to prepare for a first visit." },
+  { icon: "/icons/location.svg", title: "Contact and Location", href: "/contact/", body: `Find the office at ${address} and call with scheduling questions.` },
+  { icon: "/icons/heel-glow.svg", title: "Conditions Treated", href: "/conditions/", body: "Browse common heel, nail, diabetic foot, sports, and ankle concerns." },
+  { icon: "/icons/balance.svg", title: "Treatment Options", href: "/treatments/", body: "See the conservative, procedural, and surgical options patients may discuss." },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": `${config.seo.site_url}/#clinic`,
+      "name": config.practice.name,
+      "url": config.seo.site_url,
+      "telephone": config.contact.phone,
+      "medicalSpecialty": "Podiatric",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": [config.contact.address_line_1, config.contact.address_line_2].filter(Boolean).join(", "),
+        "addressLocality": config.contact.city,
+        "addressRegion": config.contact.state,
+        "postalCode": config.contact.zip,
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": config.schema.latitude,
+        "longitude": config.schema.longitude
+      }
+    },
+    {
+      "@type": "Physician",
+      "@id": `${config.seo.site_url}/doctor/#physician`,
+      "name": `Dr. ${config.doctor.name}, ${config.doctor.credentials}`,
+      "medicalSpecialty": "Podiatric",
+      "worksFor": { "@id": `${config.seo.site_url}/#clinic` }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={`About Dr. William Johncock | Hickory NC Podiatrist`}
+  description={`Learn about Carolina Podiatry Center in Hickory, NC, where Dr. William J. Johncock provides foot and ankle care for heel pain, sports injuries, nail problems, diabetic foot concerns, and surgery consultations.`}
+  canonicalPath="/about"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="about-hero">
+    <div class="container about-hero__grid">
+      <div>
+        <p class="eyebrow">About the Practice</p>
+        <h1>Hickory Foot and Ankle Care Led by Dr. William J. Johncock</h1>
+        <p class="lede">
+          Carolina Podiatry Center helps patients in Hickory and nearby Catawba Valley communities get clear answers for heel pain, sports injuries, toenail problems, diabetic foot concerns, wounds, and foot conditions that may need surgery.
+        </p>
+        <div class="button-row">
+          <CTAButton href="/appointment" variant="primary">Request Appointment</CTAButton>
+          <CTAButton href="/conditions" variant="outline">Browse Conditions</CTAButton>
+        </div>
+      </div>
+      <img class="doctor-photo doctor-photo--shoe" src={doctorShoePhoto.file_path} alt={doctorShoePhoto.alt_text} loading="eager" />
+    </div>
+  </section>
+
+  <Breadcrumbs items={[{ label: "About" }]} />
+
+  <section class="section section--tight" id="doctor">
+    <div class="container about-split">
+      <div class="about-split__copy">
+        <h2>A Local Podiatry Office for Everyday Foot Problems and Active Patients</h2>
+        <p>
+          Dr. Johncock's public practice profile points to a broad podiatry practice with conservative care, procedure-based care, and foot surgery available when the diagnosis calls for it. The site is built around the questions patients usually have before they call: what might be causing the pain, what treatment paths exist, and what can be handled in a podiatry office.
+        </p>
+        <p>
+          The office is located at {address}. Patients can call {config.contact.phone} to confirm current hours, scheduling, insurance questions, and whether a specific foot or ankle concern is a good fit for the practice.
+        </p>
+      </div>
+      <img class="office-photo" src={officePhoto?.file_path || "/images/treatment-room-interior.jpg"} alt={officePhoto?.alt_text || "Podiatry treatment room"} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container care-grid">
+      <div class="care-card">
+        <img src="/icons/running.svg" alt="" width="32" height="32" />
+        <h2>Sports and Running Foot Care</h2>
+        <p>Running pain, tendon irritation, ankle sprains, shoe fit issues, and recurring overuse injuries can often be approached with a practical plan before symptoms become harder to manage.</p>
+      </div>
+      <div class="care-card">
+        <img src="/icons/heel-glow.svg" alt="" width="32" height="32" />
+        <h2>Heel Pain and Plantar Fasciitis</h2>
+        <p>Morning heel pain, arch strain, heel spurs, and Achilles irritation are common reasons patients look for a Hickory foot doctor.</p>
+      </div>
+      <div class="care-card">
+        <img src="/icons/scalpel.svg" alt="" width="32" height="32" />
+        <h2>Conservative and Surgical Options</h2>
+        <p>Many foot problems start with shoe changes, supports, padding, medication guidance, or in-office care. Surgery can be discussed when simpler options are not enough.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container about-split about-split--reverse">
+      <img class="doctor-photo doctor-photo--medal" src={doctorMedalPhoto.file_path} alt={doctorMedalPhoto.alt_text} loading="lazy" />
+      <div class="about-split__copy">
+        <h2>Foot Care for People Who Want to Stay Moving</h2>
+        <p>
+          The clinic's long-run positioning fits patients who want practical care without turning every symptom into a crisis. A visit can help sort out whether the problem is soft tissue strain, a nail or skin issue, diabetic foot risk, a structural concern, or something that needs imaging or a procedure.
+        </p>
+        <p>
+          Start with the page closest to your symptoms, then use the appointment form or phone number if you need help deciding where your issue fits.
+        </p>
+        <CTAButton href="/conditions/sports-injuries" variant="primary">Sports Injury Care</CTAButton>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--tight">
+    <div class="container">
+      <div class="compact-head">
+        <h2>Practice Information</h2>
+        <p>Helpful next pages for patients deciding whether Carolina Podiatry Center is the right place to call.</p>
+      </div>
+      <div class="practice-link-grid">
+        {practiceLinks.map((item) => (
+          <a href={item.href} class="practice-link-card">
+            <img src={item.icon} alt="" width="30" height="30" />
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+            <span>View details</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    background: var(--brand-light-bg);
+    padding: var(--space-8) 0;
+  }
+  .about-hero__grid,
+  .about-split {
+    align-items: center;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: 1fr 0.85fr;
+  }
+  .about-hero img,
+  .about-split img {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    width: 100%;
+  }
+  .doctor-photo--shoe {
+    object-position: center 18%;
+  }
+  .doctor-photo--medal {
+    object-position: center 16%;
+  }
+  .office-photo {
+    object-position: center;
+  }
+  .eyebrow {
+    color: var(--brand-accent);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+  .lede,
+  .about-split__copy p,
+  .care-card p {
+    color: var(--brand-slate);
+  }
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .compact-head {
+    margin-bottom: var(--space-5);
+    max-width: 760px;
+  }
+  .compact-head p {
+    color: var(--brand-slate);
+  }
+  .practice-link-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .practice-link-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    padding: var(--space-5);
+    text-decoration: none;
+  }
+  .practice-link-card:hover {
+    box-shadow: var(--shadow-md);
+    color: inherit;
+  }
+  .practice-link-card img,
+  .care-card img {
+    filter: invert(63%) sepia(67%) saturate(595%) hue-rotate(355deg) brightness(95%) contrast(90%);
+    margin-bottom: var(--space-3);
+  }
+  .practice-link-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: var(--space-2);
+  }
+  .practice-link-card p {
+    color: var(--brand-slate);
+    font-size: 0.95rem;
+  }
+  .practice-link-card span {
+    color: var(--brand-primary);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .about-split--reverse {
+    grid-template-columns: 0.9fr 1fr;
+  }
+  .care-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .care-card {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-5);
+  }
+  .care-card h2 {
+    font-size: 1.25rem;
+    margin-top: var(--space-4);
+  }
+  @media (max-width: 850px) {
+    .about-hero__grid,
+    .about-split,
+    .about-split--reverse,
+    .care-grid,
+    .practice-link-grid {
+      grid-template-columns: 1fr;
+    }
+    .doctor-photo--shoe,
+    .doctor-photo--medal {
+      object-position: center 14%;
+    }
+  }
+</style>
