@@ -1,0 +1,25 @@
+{
+  "name": "dr-johncock-site",
+  "account_id": "e60cee5640c98f88d1bd7f93082eec3b",
+  "main": "./worker.mjs",
+  "compatibility_date": "2026-06-06",
+  "compatibility_flags": [
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": "../dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.01
+    }
+  }
+}
