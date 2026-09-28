@@ -1,0 +1,9 @@
+{
+  "name": "dr-johncock-site",
+  "account_id": "d1f19a5d17bf539b98da8c28fa8e2576",
+  "compatibility_date": "2026-06-06",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "assets": {
+    "directory": "./dist"
+  }
+}
